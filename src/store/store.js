@@ -21,6 +21,7 @@ export default new Vuex.Store({
     register: {},
     moneyShow: true,
     buysuccess:{},
+    sellsuccess:{},
     qiniuaddr: "http://95youhe.com/"  //七牛地址
   },
   mutations: {},

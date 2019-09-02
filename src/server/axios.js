@@ -41,7 +41,7 @@ axios.interceptors.request.use(
     }
     // qs转换
     if (config.method.toUpperCase() !== "GET") {
-      // config.data = qs.stringify(config.data);
+      if (Object.prototype.toString.call(config.data) !== '[object FormData]')  config.data = qs.stringify(config.data);
     }
     return config;
   },
@@ -110,12 +110,12 @@ export default class Axios {
         // userid: store.state.userInfo.userid || ""
         // Cookie: "JSESSIONID=" + window.localStorage.getItem('Cookie')
       };
+      
       // 处理get、post传参问题
       method.toUpperCase() !== "GET" ?
         // (_option.data = {...params,...{token:store.state.token}}) :
-        (_option.data = params) :
+        (_option.data = Object.prototype.toString.call(params) === '[object FormData]'? params:{...params,...{token:store.state.token}}) :
         (_option.params = params);
-
       // 请求成功后服务器返回二次处理
       axios.request(_option).then(
         res => {

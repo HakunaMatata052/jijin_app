@@ -21,7 +21,7 @@
   </div>
 </template>
 <script>
-import user_img from "@//assets/images/default.png";
+import user_img from "@/assets/images/default.png";
 export default {
   name: "searchBar",
   components: {},

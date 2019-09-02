@@ -5,7 +5,7 @@
       <div class="buyTop">
         <p class="tip">交易提示：完成支付后预计在{{info.time}}确认</p>
         <div>
-          <p>黄金基金</p>
+          <p>{{info.fund_name}}</p>
           <p>
             费率：
             <span>{{info.rate}}</span>
@@ -61,7 +61,8 @@ export default {
         rate: 0,
         redem_rate: 0,
         money: 0,
-        volume: 0
+        volume: 0,
+        fund_name: ""
       },
       value: "",
       keyboardShow: false,
@@ -106,12 +107,17 @@ export default {
       this.loading = true
       this.$SERVER.redeemSubmit({
          order_id: this.$route.params.id,
-         volume: this.volume,
+         volume: this.value,
          password: pwd
       }).then(res=>{
         this.loading = false
         this.$toast.success('赎回成功！')
-        this.$router.go(-1)
+        this.$store.state.sellsuccess = {
+          volume: this.value,
+          fund_name: this.info.fund_name,
+          data: res.data
+        }
+        this.$router.push('/redemptionsuccess')
       })
     }
   }

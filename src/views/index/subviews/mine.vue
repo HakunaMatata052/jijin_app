@@ -3,12 +3,8 @@
     <navBar :stl="'nobg'" />
     <div class="main">
       <div class="own" :style="'padding-top:'+ top +'px'">
-        <van-uploader
-          :after-read="uploadAvatar"
-          :accept="'image/*'"
-          class="ownHeadImg"
-        >
-          <img src="../../../assets/images/default.png" />
+        <van-uploader :after-read="uploadAvatar" :accept="'image/*'" class="ownHeadImg">
+          <img :src="$store.state.userInfo.user_img || user_img"/>
         </van-uploader>
         <div class="ownInfor">
           <span>{{$store.state.userInfo.user_nickname}}</span>
@@ -40,6 +36,7 @@
 
 <script>
 import navBar from "@/components/navbar/navbar.vue";
+import user_img from "@/assets/images/default.png";
 export default {
   name: "mine",
   components: {
@@ -48,6 +45,7 @@ export default {
   data() {
     return {
       top: 0,
+      user_img: user_img,
       myInfo: {
         fansCount: 0,
         attentionCount: 0,
@@ -116,10 +114,14 @@ export default {
     },
     uploadAvatar(file) {
       let formData = new FormData();
-      // formData.append('file', file.file);
-      formData.append('a',"a");
-      // console.log(typeof formData)
-      this.$SERVER.uploadfile(formData);
+      formData.append("file", file.file);
+      formData.append("token", this.$store.state.token);
+      this.$SERVER.uploadfile(formData).then(res => {
+        this.$toast.success(res.msg)
+        this.$METHOD.updateLocalUserInfo("user_img", res.data.face);
+      }).catch(err=>{
+        this.$toast.success(err.msg)
+      });
     },
     uploadSuccess(val) {
       var that = this;

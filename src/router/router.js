@@ -299,6 +299,19 @@ const router = new Router({
         isLogin:true
       }
     },
+    //赎回成功
+    {
+      path: "/redemptionsuccess",
+      name: "redemptionsuccess",
+      component: () => import("@/views/earnings/redemptionsuccess.vue"),
+      meta: {
+        keepAlive: false,
+        isTransition: true,
+        title:"赎回成功",
+        isMember: false,
+        isLogin:true
+      }
+    },
     //充值、提现
     {
       path: "/topup",
