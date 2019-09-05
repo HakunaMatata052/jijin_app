@@ -132,8 +132,8 @@ export default {
       font-size: 16px;
     }
     svg {
-      width: 2em;
-      height: 2em;
+      width: 1.6em;
+      height: 1.6em;
     }
     &.active {
       color: #333;

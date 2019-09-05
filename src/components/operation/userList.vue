@@ -39,7 +39,7 @@ export default {
       this.top = 25;
     }
     if (systemType == "ios") {
-      this.top = 40;
+      this.top = 30;
       this.searchEmptyShow = true;
     }
   },

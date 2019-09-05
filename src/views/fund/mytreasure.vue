@@ -12,12 +12,12 @@
           <div class="mytreasureoneTC">
             <div class="mytreasureoneTCL">
               <p>七日年化</p>
-              <p>2.574%</p>
+              <p>{{info.nianhua}}</p>
             </div>
             <div class="mytreasureoneTCR">
               <p>万份收益</p>
-              <p>0.6970</p>
-              <p>数据发布时间：2019/08/08</p>
+              <p>{{info.netvalue}}</p>
+              <p>数据发布时间：{{info.fabu_time}}</p>
             </div>
           </div>
         </div>
@@ -45,54 +45,11 @@ export default {
       this.info = res.data
     })
   },
-  mounted() {
-    this.drawLine();
-    var systemType = this.$store.state.systemType;
-    if (systemType == "android") {
-      this.top = 25;
-    }
-    if (systemType == "ios") {
-      this.top = 40;
-    }
-  },
   methods: {
     onChange(picker, value, index) {
       console.log(`当前值：${value}, 当前索引：${index}`);
     },
     drawLine() {
-      // 基于准备好的dom，初始化echarts实例
-      let myChart = this.$echarts.init(document.getElementById("myChart"));
-      // 绘制图表
-      myChart.setOption({
-        xAxis: [
-          {
-            type: "category",
-            boundaryGap: false,
-            data: ["2019/06/18", "2019/07/03", "2019/07/18"]
-          }
-        ],
-        yAxis: [
-          {
-            type: "value"
-          }
-        ],
-        series: [
-          {
-            name: "本基金涨跌幅",
-            type: "line",
-            smooth: true,
-            itemStyle: { normal: { areaStyle: { type: "default" } } },
-            data: [5, 2, 6]
-          },
-          {
-            name: "深沪300",
-            type: "line",
-            smooth: true,
-            itemStyle: { normal: { areaStyle: { type: "default" } } },
-            data: [9, 3, 6]
-          }
-        ]
-      });
     }
   }
 };

@@ -392,7 +392,7 @@ const router = new Router({
     },
     //日收益
     {
-      path: "/dayvalue",
+      path: "/dayvalue/:id?",
       name: "dayvalue",
       component: () => import("@/views/earnings/dayvalue.vue"),
       meta: {
@@ -405,7 +405,7 @@ const router = new Router({
     },
     //收益分析
     {
-      path: "/benefitanalysis",
+      path: "/benefitanalysis/:type?",
       name: "benefitanalysis",
       component: () => import("@/views/earnings/benefitanalysis.vue"),
       meta: {
@@ -577,7 +577,7 @@ const router = new Router({
         isTransition: true,
         title:"客服",
         isMember: false,
-        isLogin:false
+        isLogin:true
       }
     },
     {
@@ -611,7 +611,7 @@ router.beforeEach((to, from, next) => {
   if (to.meta.isMember) {
     if (!JSON.parse(window.localStorage.getItem('userInfo')).auth) {
       Toast.fail('请先实名认证后操作！')
-      router.push('/')
+      router.push('/registration')
     }else{
       next()
     }

@@ -3,46 +3,46 @@
     <navBar />
     <div class="main">
       <div class="buyfund">
-        <van-cell value="基金详情" class="buyfundtitle">
+        <van-cell value="基金详情" class="buyfundtitle" :to="'/fundDetail/'+info.fund_code">
           <template slot="title">
-            <span>前海开源沪港深</span>
-            <span>006011</span>
+            <span>{{info.stock_name}}</span>
+            <span>{{info.fund_code}}</span>
           </template>
         </van-cell>
         <van-row class="buyfundone">
           <van-col span="12">
             <p class="buyfundonetitle">金额(元）</p>
-            <p class="buyfundonetitlemoney">100.00</p>
+            <p class="buyfundonetitlemoney">{{info.money}}</p>
           </van-col>
           <van-col span="12">
-            <p class="buyfundonetitle">日涨跌幅</p>
-            <p class="buyfundonetitleper">0.85%</p>
+            <p class="buyfundonetitle">月涨跌幅</p>
+            <p class="buyfundonetitleper">{{info.month_incratio}}</p>
           </van-col>
         </van-row>
         <div class="buyfundtwo">
           <div class="buyfundtwoT">
             <span>待确认金额：</span>
-            <span>100.00元</span>
+            <span>{{info.dazhifu_money}}元</span>
           </div>
-          <van-cell is-link>
+          <van-cell is-link :to="'/dayvalue/'+$route.params.id">
             <template slot="title">
               <div>
                 <span class="custom-title">持有份额：</span>
-                <span>0.00元</span>
+                <span>{{info.amount}}元</span>
               </div>
               <div class="custom-titlB">
-                <span class="custom-title">07-19净值：</span>
-                <span>1.1700</span>
+                <span class="custom-title">{{info.yesterday_time}}净值：</span>
+                <span>{{info.yesterday_jing}}</span>
               </div>
             </template>
             <template slot="default">
               <div>
                 <span class="custom-title" style="margin-left:12px;">昨日收益：</span>
-                <span class="custom-titleT">更新中</span>
+                <span class="custom-titleT">{{info.yesterday}}</span>
               </div>
               <div class="custom-titlB">
                 <span class="custom-title" style="margin-left:12px;">累计收益：</span>
-                <span class="custom-titleT">1,700.00</span>
+                <span class="custom-titleT">{{info.zong_yingkui}}</span>
               </div>
             </template>
           </van-cell>
@@ -52,40 +52,42 @@
             class="title-tabs"
             :color="$store.state.color"
             :title-active-color="$store.state.color"
+            v-model="activeType"
+            @change="drawLine"
           >
-            <van-tab title="近一月" name="a"></van-tab>
-            <van-tab title="近三月" name="b"></van-tab>
-            <van-tab title="近半年" name="c"></van-tab>
-            <van-tab title="近一年" name="d"></van-tab>
+            <van-tab title="近一月" name="one_month"></van-tab>
+            <van-tab title="近三月" name="three_month"></van-tab>
+            <van-tab title="近半年" name="six_month"></van-tab>
+            <van-tab title="近一年" name="one_year"></van-tab>
           </van-tabs>
-          <van-row class="showDeepAndGains">
-            <van-col span="12">
-              <van-icon class-prefix="icon" name="dian" class="gainsIcon" />
-              <span class="gains">本基金涨跌幅</span>
-              <span class="gainsPer">+8.16%</span>
-            </van-col>
-            <van-col span="12">
-              <van-icon class-prefix="icon" name="dian" class="deepIcon" />
-              <span class="deep">深沪300</span>
-              <span class="deepPer">+8.16%</span>
-            </van-col>
-          </van-row>
-          <div id="myChart" :style="{width: '300px', height: '300px'}"></div>
+          <canvas id="myChart"></canvas>
         </div>
         <div class="buyfundfour">
           <van-cell title="交易记录" is-link />
         </div>
       </div>
     </div>
-    <div class="bottom-btn" :style="'height:'+ (50+bottom)+'px;'">
-      <div class="btn sell" @click="gobuy('/redemption/')">赎回</div>
-      <div class="btn buy" @click="gobuy('/redemption/')">申购</div>
+    <div class="bottom-btn">
+      <div
+        class="btn sell"
+        @click="$router.push('/redemption/'+$route.params.id)"
+        v-if="info.can_shuhui"
+        :style="'height:'+ (50+bottom)+'px;'"
+      >赎回</div>
+      <div
+        class="btn buy"
+        @click="$router.push('/buy/'+info.fund_code)"
+        v-if="info.can_buy"
+        :style="'height:'+ (50+bottom)+'px;'"
+      >申购</div>
     </div>
   </div>
 </template>
 
 <script>
 import navBar from "@/components/navbar/navbar.vue";
+import F2 from "@antv/f2/lib/index";
+import "@antv/f2/lib/interaction";
 export default {
   name: "buyfund",
   components: {
@@ -93,17 +95,90 @@ export default {
   },
   data() {
     return {
-      bottom: 0
+      bottom: 0,
+      activeType: "one_month",
+      data: {},
+      info: {
+        amount: "0.00",
+        bjj_zhangdie: 0,
+        can_shuhui: 0,
+        dazhifu_money: "0",
+        fund_code: "",
+        money: "0",
+        month_incratio: 0,
+        order_id: "",
+        stock_name: "",
+        yesterday: "更新中",
+        yesterday_jing: "0",
+        yesterday_time: "2019-08-30",
+        zong_yingkui: 0
+      }
     };
   },
-  created(){
+  created() {
     if (window.navigator.userAgent.match(/APICloud/i)) {
       this.bottom = api.safeArea.bottom;
     }
+    this.$SERVER
+      .stock_buy_detail({
+        order_id: this.$route.params.id
+      })
+      .then(res => {
+        this.info = res.data;
+      });
+    this.drawLine();
   },
   methods: {
-    gobuy(type) {
-      this.$router.push(type + this.$route.params.id);
+    drawLine() {
+      this.$SERVER
+        .buy_jingzhi({
+          order_id: this.$route.params.id,
+          month: this.activeType
+        })
+        .then(res => {
+          this.data = res.data.k_xiantu;
+          const chart = new F2.Chart({
+            id: "myChart",
+            pixelRatio: window.devicePixelRatio // 指定分辨率
+          });
+          chart.legend(false); // 不使用默认图例
+          chart.interaction("pan");
+          chart.interaction("pinch");
+
+          // Step 2: 载入数据源
+          chart.source(this.data, {
+            fbrq: {
+              type: "timeCat",
+              tickCount: 3,
+              range: [0, 1]
+            },
+            jjjz: {
+              tickCount: 10
+            }
+          });
+          // Step 3：创建图形语法，绘制柱状图，由 genre 和 sold 两个属性决定图形位置，genre 映射至 x 轴，sold 映射至 y 轴
+          chart
+            .line()
+            .position("fbrq*networth")
+            .shape("smooth")
+            .color("l(0) 0:#F2C587 0.5:#ED7973 1:#8659AF");
+          chart
+            .area()
+            .position("fbrq*networth")
+            .shape("smooth")
+            .color("l(0) 0:#F2C587 0.5:#ED7973 1:#8659AF");
+          // Step 4: 渲染图表
+          chart.axis("networth", {
+            label: (text, index, total) => {
+              const cfg = {
+                textAlign: "right"
+              };
+              cfg.text = text + "%"; // cfg.text 支持文本格式化处理
+              return cfg;
+            }
+          });
+          chart.render();
+        });
     }
   }
 };
@@ -161,6 +236,7 @@ export default {
       padding-top: 7px;
       font-size: 15px;
       color: rgba(51, 51, 51, 1);
+      font-weight: bold;
     }
   }
   .buyfundtwo {
@@ -262,6 +338,11 @@ export default {
       width: 60%;
     }
   }
+}
+
+#myChart {
+  width: 100%;
+  height: 320px;
 }
 </style>
 

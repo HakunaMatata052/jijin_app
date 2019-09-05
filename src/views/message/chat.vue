@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <navBar :title="title" />
+    <navBar />
     <div class="main">
       <th-message
         ref="messgebox"

@@ -34,7 +34,7 @@
             class="fundListContentModel"
             v-for="(item, index) in list"
             :key="index"
-            @click="$router.push('/fundDetail/'+item.fund_code)"
+            @click="go(item.fund_code)"
           >
             <div class="fundListContentModelLeft">
               <div class="fundListContentModelLeftT">
@@ -65,7 +65,12 @@
       <div class="hotSearch">
         <h1>热搜基金</h1>
         <div class="hotSearchList">
-          <div class="hotSearchListM" v-for="(item,index) in hotList" :key="index" @click="$router.push('/fundDetail/'+item.fund_code)">
+          <div
+            class="hotSearchListM"
+            v-for="(item,index) in hotList"
+            :key="index"
+            @click="go(item.fund_code)"
+          >
             <div class="hotSearchLeft">
               <!-- <span class="hotSearchLtip">指</span> -->
               <span class="hotSearchLTitle">{{item.fund_name}}</span>
@@ -75,7 +80,10 @@
               <span :class="item.rise==1?'zhang':'die'">{{item.year_incratio}}</span>
               <span>近一年涨幅</span>
             </div>
-            <div class="hotSearchRight" @click.stop="likeFn(item.fund_code,!item.like,index,'hotList')">
+            <div
+              class="hotSearchRight"
+              @click.stop="likeFn(item.fund_code,!item.like,index,'hotList')"
+            >
               <van-icon class-prefix="icon" name="starred" class="starIcon" v-if="item.like" />
               <van-icon class-prefix="icon" name="shoucang" class="soucangIcon" v-else />
             </div>
@@ -131,7 +139,7 @@ export default {
   },
   created() {
     var searchHistory = this.$METHOD.getStore("searchHistory");
-    if(!searchHistory) return
+    if (!searchHistory) return;
     this.searchHistory = JSON.parse(searchHistory);
     this.$SERVER.hotsearch().then(res => {
       this.hotList = res.data;
@@ -146,7 +154,17 @@ export default {
       this.top = 30;
     }
   },
+  activated() {
+    if (this.$store.state.searchClear) {
+      this.value = "";
+      this.list = [];
+    }
+  },
   methods: {
+    go(val){
+      this.$store.state.searchClear = false
+      this.$router.push('/fundDetail/'+val)
+    },
     onClickLeft() {
       this.$router.go(-1);
     },
@@ -179,7 +197,7 @@ export default {
         this.list = res.data;
       });
     },
-    likeFn(id, type, index,list) {
+    likeFn(id, type, index, list) {
       this[list][index].like = !this[list][index].like;
       this.$SERVER
         .stock_like_up({

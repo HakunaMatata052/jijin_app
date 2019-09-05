@@ -13,15 +13,15 @@
           <van-icon class-prefix="icon" name="yanjing" color="#fff" @click="$store.state.moneyShow = !$store.state.moneyShow"/>
         </van-col>
       </van-row>
-      <h1 v-if="$store.state.moneyShow">{{data.zhanghuyue+data.jijin}}</h1>
+      <h1 v-if="$store.state.moneyShow">{{data.zongyue}}</h1>
       <h1 v-else>******</h1>
     </div>
      <div class="receiptinfo">
-        <dl>
+        <dl @click="$router.push('/benefitanalysis/0')">
           <dt>{{data.zuorishouyi_time}}收益</dt>
           <dd>{{data.zuorishouyi}}</dd>
         </dl>
-        <dl>
+        <dl @click="$router.push('/benefitanalysis/2')">
           <dt>累计收益</dt>
           <dd>{{data.leijishouyi}}</dd>
         </dl>
@@ -55,7 +55,7 @@
           </van-cell>  
           <van-cell>
             <template slot="title">
-              <span class="custom-text">万元每日收益3.12</span>
+              <span class="custom-text">万元每日收益{{data.wanyuan_shouyi}}</span>
             </template>  
           </van-cell>  
       </van-row>

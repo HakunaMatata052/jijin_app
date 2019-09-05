@@ -1,9 +1,12 @@
 <template>
   <div id="app">
     <!-- 全局组件 -->
+    <transition name="van-fade">
+      <autoLaunch v-show="show" @complete="complete" />
+    </transition>
     <transition :name="transitionName">
       <keep-alive :max="10" :include="keepAlive">
-        <router-view></router-view>
+        <router-view v-show="!show"></router-view>
       </keep-alive>
     </transition>
   </div>
@@ -12,10 +15,15 @@
 /* eslint-disable */
 import router from "./router/router.js";
 import messageUtil from "@/common/js/messageUtil.js";
+import autoLaunch from "@/components/autoLaunch/autoLaunch.vue";
 export default {
   name: "App",
+  components: {
+    autoLaunch
+  },
   data() {
     return {
+      show: true,
       transitionName: "",
       keepAlive: []
     };
@@ -43,14 +51,24 @@ export default {
       this.allEvent();
       // this.$RONGYUN.initRongyun(); //初始化融云
       that.$store.state.systemType = api.systemType;
+      //关闭启动图
+      api.removeLaunchView({
+        animation: { type: "fade", duration: 0 }
+      });
     }
     this.setVux();
+    if (this.$METHOD.getStore("first")) {
+      this.show = false;
+    }
   },
   mounted() {
     // console.log(this.keepAlive); // 设置缓存匹配
   },
   methods: {
-       allEvent() {
+    complete() {
+      this.show = false;
+    },
+    allEvent() {
       var that = this;
       // 点击消息状态栏跳转
       api.addEventListener(
@@ -109,35 +127,10 @@ export default {
   }
 };
 </script>
-<style lang="less">
-.color {
-  color: rgba(81,150,255,1)
-}
-@color: rgba(81,150,255,1);
-@black: #000;
-@white: #fff;
-@red: #000 !important;
-@blue: #999;
-@orange: #ff976a;
-@orange-dark: #ed6a0c;
-@orange-light: #fffbe8;
-@green: #07c160;
-@gray: #c9c9c9;
-@gray-light: #e5e5e5;
-@gray-darker: #7d7e80;
-@gray-dark: #969799;
-
-// default colors
-@text-color: #323233;
-@border-color: #ebedf0;
-@active-color: #f2f3f5;
-@background-color: #f8f8f8;
-@background-color-light: #fafafa;
-</style>
 
 <style lang="less" scope>
 #app {
-  font-family: "PingFang-SC-Medium", "PingFang SC", "Microsoft YaHei", Helvetica,
+  font-family: "PingFang-SC-Medium" ,"Microsoft YaHei", Helvetica,
     Tahoma, Arial, "Hiragino Sans GB", "Heiti SC", "WenQuanYi Micro Hei",
     sans-serif;
   height: 100%;

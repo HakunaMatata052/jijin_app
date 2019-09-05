@@ -40,9 +40,12 @@ export default {
   },
   methods: {
     getList() {
+      let order_id = ""
+      if(this.$route.params.id) order_id = this.$route.params.id
       this.$SERVER
         .profit({
-          page: this.page
+          page: this.page,
+          order_id: order_id
         })
         .then(res => {
           this.page++;

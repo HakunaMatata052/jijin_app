@@ -48,7 +48,7 @@
           :hairline="false"
         >确认修改</van-button>
         <p></p>
-        <div class="gologin">
+        <div class="gologin" v-if="$METHOD.getStore('token')">
           已有账号？
           <span @click="$router.push('/login')">立即登录</span>
         </div>
@@ -179,16 +179,16 @@ export default {
   .field {
   }
   .checknumbtn {
-    background: rgba(254, 196, 58, 1);
+    background: #5196FF;
     border: 0;
   }
   .regbtn {
-    background: rgba(254, 196, 58, 1);
+    background: #5196FF;
     border-radius: 100px;
     margin-top: 30px;
     font-size: 17px;
     font-weight: bold;
-    color: rgba(51, 51, 51, 1);
+    color: #fff;
     border: 0;
   }
   p {
@@ -196,7 +196,7 @@ export default {
     color: #fff;
     font-size: 14px;
     span {
-      color: rgba(254, 196, 58, 1);
+      color: #5196FF;
       margin-left: 5px;
     }
   }

@@ -1,6 +1,6 @@
 <template>
   <div class="searchNav" :style="'padding-top:'+ top +'px'">
-    <div class="minePicture">
+    <div class="minePicture" @click="$router.push('/mine')">
       <img :src="$store.state.userInfo.user_img || user_img" />
     </div>
     <van-search
@@ -9,15 +9,10 @@
       slot="title"
       shape="round"
       class="search"
-      @click="$router.push('/search')"
+      @click="searchFn"
       readonly
     />
-    <van-icon
-      class-prefix="icon"
-      name="kefu"
-      class="kefu"
-      @click="$router.push('/chat')"
-    />
+    <van-icon class-prefix="icon" name="kefu" class="kefu" @click="$router.push('/chat')" />
   </div>
 </template>
 <script>
@@ -32,7 +27,6 @@ export default {
       user_img: user_img
     };
   },
-  created() {},
   mounted() {
     var systemType = this.$store.state.systemType;
     if (systemType == "android") {
@@ -40,6 +34,12 @@ export default {
     }
     if (systemType == "ios") {
       this.top = 30;
+    }
+  },
+  methods: {
+    searchFn() {
+      this.$store.state.searchClear = true;
+      this.$router.push("/search");
     }
   }
 };

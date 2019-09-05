@@ -117,7 +117,7 @@ export default {
         return;
       }
       
-      if (!this.formcaptcha || this.form.captcha.length==0) {
+      if (!this.form.captcha || this.form.captcha.length==0) {
         this.$toast.fail("请输入验证码");
         return;
       }
@@ -182,7 +182,7 @@ export default {
   border-radius: 22px;
   margin: 27px auto;
   font-size: 17px;
-  font-family: PingFang;
+  font-family: PingFang-SC-Medium;
   font-weight: bold;
   color: rgba(255, 255, 255, 1);
   line-height: 44px;

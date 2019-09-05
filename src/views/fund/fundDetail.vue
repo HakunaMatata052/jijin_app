@@ -7,7 +7,7 @@
         {{$route.params.id}}
       </h1>
       <van-row class="title">
-        <van-icon class-prefix="icon" name="shuju" class="shenIcon" />本基金精选美国纳斯达克蓝筹股
+        <van-icon class-prefix="icon" name="shuju" class="shenIcon" />{{data.explain}}
       </van-row>
       <div class="titleList2">
         <van-row class="titleListLine">
@@ -19,7 +19,7 @@
           <van-col span="12" class="titleListLineNum">{{data.netvalue}}</van-col>
         </van-row>
         <div class="button">
-          <p>{{data.fund_risk_level}}</p>
+          <p :class="data.boom?'gao':''">{{data.fund_risk_level}}</p>
           <p>{{data.min_value}}元起购</p>
           <p>{{data.type2_id_desc}}</p>
         </div>
@@ -32,7 +32,7 @@
           animated
           :lazy-render="false"
         >
-          <van-tab :title="data.type2_id_desc!='货币型'?'收益率走势':'万份收益走势'" :name="1" v-if="">
+          <van-tab :title="data.type2_id_desc!='货币型'?'收益率走势':'万份收益走势'" :name="1">
             <canvas id="myChart"></canvas>
           </van-tab>
           <van-tab :title="data.type2_id_desc!='货币型'?'历史净值':'万份收益'" :name="2">
@@ -50,11 +50,14 @@
                 <td>{{item.jjjz}}</td>
                 <td v-if="data.type2_id_desc!='货币型'">{{item.ljjz}}</td>
                 <td>
-                  <span :class="item.rise==0?'die':'zhang'">{{item.networth}}</span>
+                  <span :class="item.rise==0?'die':'zhang'">{{item.networth}}%</span>
                 </td>
               </tr>
             </table>
-            <div class="more" @click="$router.push('/historyvalue/'+$route.params.id+'/'+data.type2_id_desc)">查看更多</div>
+            <div
+              class="more"
+              @click="$router.push('/historyvalue/'+$route.params.id+'/'+data.type2_id_desc)"
+            >查看更多</div>
           </van-tab>
         </van-tabs>
 
@@ -111,20 +114,22 @@
           </template>
         </van-cell>
       </van-cell-group>
-
-      <div class="bottomFooter"></div>
     </div>
     <van-goods-action class="goods-action" safe-area-inset-bottom>
       <van-goods-action-icon @click="$router.push('/chat')">
         <van-icon class-prefix="icon" name="kefu" class="kefu" />
         <p class="bottomTitle">客服</p>
       </van-goods-action-icon>
-      <van-goods-action-icon @click="likeFn">
-        <van-icon name="star" color="#ff0" size="23" v-if="data.like" />
+      <van-goods-action-icon @click="likeFn(data.like)">
+        <van-icon name="star" color="rgba(255, 210, 0, 1)" size="23" v-if="data.like" />
         <van-icon name="star-o" size="23" v-else />
         <p class="bottomTitle">收藏</p>
       </van-goods-action-icon>
-      <van-goods-action-button :to="'/buy/'+$route.params.id" :disabled="!data.can_buy" :color="data.can_buy?'rgba(255, 89, 65, 1)':'#999'">
+      <van-goods-action-button
+        :to="'/buy/'+$route.params.id"
+        :disabled="!data.can_buy"
+        :color="data.can_buy?'rgba(255, 89, 65, 1)':'#999'"
+      >
         <template slot="default">
           <p class="byTitle" v-if="data.can_buy">申购</p>
           <p class="byTitle" v-else>暂停申购</p>
@@ -183,7 +188,7 @@ export default {
       })
       .then(res => {
         this.data = res.data;
-        this.data.ljjz = res.data.cache[0].ljjz;
+        this.data.ljjz = res.data.cache.ljjz;
       });
     this.getJingzhi();
   },
@@ -194,7 +199,7 @@ export default {
       this.top = 25;
     }
     if (systemType == "ios") {
-      this.top = 40;
+      this.top = 30;
     }
   },
   beforeDestroy: function() {
@@ -223,12 +228,21 @@ export default {
     drawLine() {
       const chart = new F2.Chart({
         id: "myChart",
-        pixelRatio: window.devicePixelRatio, // 指定分辨率
+        pixelRatio: window.devicePixelRatio // 指定分辨率
       });
       // Step 2: 载入数据源
-      chart.source(this.list);
+      chart.source(this.list, {
+        fbrq: {
+          type: "timeCat",
+          tickCount: 3,
+          range: [0, 1]
+        },
+        jjjz: {
+          tickCount: 10
+        }
+      });
       chart.legend(false); // 不使用默认图例
-      
+
       // Step 3：创建图形语法，绘制柱状图，由 genre 和 sold 两个属性决定图形位置，genre 映射至 x 轴，sold 映射至 y 轴
       chart
         .line()
@@ -240,16 +254,18 @@ export default {
         .position("fbrq*networth")
         .shape("smooth")
         .color("l(0) 0:#F2C587 0.5:#ED7973 1:#8659AF");
-      // 坐标轴文本旋转
-      chart.axis("fbrq", {
-        label: {
-          rotate: -Math.PI / 2,
-          textAlign: "end",
-          textBaseline: "middle"
+      chart.interaction("pan");
+      chart.interaction("pinch");
+
+      chart.axis("networth", {
+        label: (text, index, total) => {
+          const cfg = {
+            textAlign: "right"
+          };
+          cfg.text = text + "%"; // cfg.text 支持文本格式化处理
+          return cfg;
         }
       });
-      chart.interaction('pan');
-      chart.interaction('pinch');
       // Step 4: 渲染图表
       chart.render();
     },
@@ -257,7 +273,7 @@ export default {
       this.data.like = !this.data.like;
       this.$SERVER
         .stock_like_up({
-          type: Number(!this.data.like),
+          type: Number(!type),
           pro_code: this.$route.params.id
         })
         .catch(err => {
@@ -292,7 +308,7 @@ export default {
   }
   .titleListT {
     background: #fff;
-    margin: 15px auto;
+    margin: 15px auto 100px;
     padding: 3px 0;
     .know .van-cell__value {
       flex: 0.5;
@@ -342,7 +358,6 @@ export default {
       }
       .titleListLineNum {
         font-size: 15px;
-        font-family: PingFang-SC-Bold;
         font-weight: bold;
         color: rgba(51, 51, 51, 1);
       }
@@ -363,6 +378,10 @@ export default {
       font-family: PingFang-SC-Regular;
       font-weight: 400;
       color: rgba(153, 153, 153, 1);
+      &.gao {
+        border: 1px solid #f44f00 !important;
+        color: #f44 !important;
+      }
     }
   }
 
@@ -489,9 +508,6 @@ export default {
     }
   }
 }
-.bottomFooter {
-  height: 1rem;
-}
 .goods-action {
   z-index: 99;
   .byTitle {
@@ -528,6 +544,7 @@ export default {
   text-align: center;
   background: #fff;
   width: 100%;
+  position: relative;
   tr:nth-child(2n + 1) {
     background: rgba(250, 250, 250, 1);
   }

@@ -30,10 +30,10 @@ class Api extends Axios {
     return await this.axios("POST", "Stock/stock_like_list", params);
   }
   async stock_index(params = {}) {
-    return await this.axios("POST", "Stock/stock_index", params);
+    return await this.axios("POST", "Stock/stock_index", params,{LOADINGHIDE:true});
   }
   async funddetails(params = {}) {
-    return await this.axios("POST", "funddetails/index", params);
+    return await this.axios("POST", "funddetails/index", params,{LOADINGHIDE:true});
   }
   async rate(params = {}) {
     return await this.axios("POST", "rate/index", params);
@@ -63,7 +63,7 @@ class Api extends Axios {
     return await this.axios("POST", "hotsearch/index", params);
   }
   async fundcustomize(params = {}) {
-    return await this.axios("POST", "fundcustomize/index", params);
+    return await this.axios("POST", "Stock/xianjinbao", params);
   }
   async fundtheme(params = {}) {
     return await this.axios("POST", "fundtheme/index", params);
@@ -75,7 +75,7 @@ class Api extends Axios {
     return await this.axios("POST", "Stock/stockBuy", params);
   }
   async profit(params = {}) {
-    return await this.axios("POST", "user/profit", params);
+    return await this.axios("POST", "Stocklog/yingkui", params);
   }
   async stockBuy(params = {}) {
     return await this.axios("POST", "Stock/stockBuy", params);
@@ -116,7 +116,23 @@ class Api extends Axios {
   async uploadfile(params = {}) {
     return await this.axios("POST", "User/upload", params);
   }
-
+  async stock_buy_detail(params = {}) {
+    return await this.axios("POST", "Stock/stock_buy_detail", params);
+  }
+  async buy_jingzhi(params = {}) {
+    return await this.axios("POST", "Stock/buy_jingzhi", params,{LOADINGHIDE:true});
+  }
+  async ProfitIndex(params = {}) {
+    return await this.axios("POST", "Profit/index", params);
+  }
+  
+  async Publiccon(params = {}) {
+    return await this.axios("POST", "Publiccon/index", params);
+  }
+  async chart_day(params = {}) {
+    return await this.axios("POST", "Profit/chart_day", params);
+  }
+  
 }
 
 

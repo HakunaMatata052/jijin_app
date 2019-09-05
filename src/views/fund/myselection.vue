@@ -57,15 +57,6 @@ export default {
       this.hotList = res.data
     })
   },
-  mounted() {
-    var systemType = this.$store.state.systemType;
-    if (systemType == "android") {
-      this.top = 25;
-    }
-    if (systemType == "ios") {
-      this.top = 40;
-    }
-  },
   methods: {
     getList() {
       this.$SERVER
@@ -97,7 +88,7 @@ export default {
       padding-top: 18px;
       div {
         font-size: 16px;
-        font-family: PingFang;
+        font-family: PingFang-SC-Medium;
         font-weight: bold;
         color: rgba(51, 51, 51, 1);
         line-height: 15px;
@@ -105,7 +96,7 @@ export default {
       div:nth-child(2) {
         padding-top: 14px;
         font-size: 13px;
-        font-family: PingFang;
+        font-family: PingFang-SC-Medium;
         font-weight: 400;
         color: rgba(153, 153, 153, 1);
         line-height: 18px;
@@ -118,7 +109,7 @@ export default {
         border: 1px solid rgba(255, 89, 65, 1);
         border-radius: 50%;
         font-size: 9px;
-        font-family: PingFang;
+        font-family: PingFang-SC-Medium;
         font-weight: bold;
         color: rgba(255, 89, 65, 1);
         line-height: 14px;
@@ -130,7 +121,7 @@ export default {
       text-align: right;
       div {
         font-size: 21px;
-        font-family: PingFang;
+        font-family: PingFang-SC-Medium;
         font-weight: bold;
         color: rgba(255, 89, 65, 1);
         line-height: 18px;
@@ -138,7 +129,7 @@ export default {
       div:nth-child(2) {
         padding-top: 14px;
         font-size: 13px;
-        font-family: PingFang;
+        font-family: PingFang-SC-Medium;
         font-weight: 400;
         color: rgba(153, 153, 153, 1);
         line-height: 18px;
@@ -153,7 +144,7 @@ export default {
 }
 .myselectionlistTitle {
   font-size: 16px;
-  font-family: PingFang;
+  font-family: PingFang-SC-Medium;
   font-weight: bold;
   color: rgba(51, 51, 51, 1);
   line-height: 15px;
@@ -161,7 +152,7 @@ export default {
 }
 .myselectionlistT {
   font-size: 13px;
-  font-family: PingFang;
+  font-family: PingFang-SC-Medium;
   font-weight: 400;
   color: rgba(153, 153, 153, 1);
   line-height: 18px;

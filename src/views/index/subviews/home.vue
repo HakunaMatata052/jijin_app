@@ -11,39 +11,28 @@
           <span v-for="(item, index) in shenzhengNum" :key="index">{{item}}</span>
         </div>
       </div>-->
-      <van-grid class="mainnav">
-        <van-grid-item
-          v-for="(item, index) in homeNav"
-          :key="index"
-          @click="$router.push(item.path)"
-          :text="item.title"
-        >
+      <div class="mainnav">
+      <van-grid  clickable :border="false">
+        <van-grid-item v-for="(item, index) in homeNav" :key="index" :to="item.path" class="menu">
+          <span slot="text">{{item.title}}</span>
           <template slot="icon">
-            <van-icon class-prefix="icon" :name="item.icon" class="homeNav" />
+            <svg-icon :icon-class="item.icon" class="homeNav"></svg-icon>
           </template>
         </van-grid-item>
       </van-grid>
+      </div>
       <div class="recommended">
         <div class="recommendedLeft">
-          <div
-            class="recommendedLeftT"
-          >{{buy_frist.phone}} 申购{{buy_frist.fund_name}} {{buy_frist.liquidation_amount}}元</div>
+          <div class="recommendedLeftT">{{buy_frist.phone}} 申购{{buy_frist.fund_name}} {{buy_frist.liquidation_amount}}元</div>
           <div class="recommendedLeftB">
-            <p>
               {{buy_frist.fund_name}}：净值
               <span>{{buy_frist.netvalue}}</span>
-            </p>
           </div>
           <div class="recommendedLeftB">
-            <p>
               年收益
               <span>{{buy_frist.year_incratio}}</span>
-            </p>
           </div>
-          <div
-            class="recommendedRight"
-            @click="$router.push('/fundDetail/'+buy_frist.fund_code)"
-          >马上申购</div>
+          <van-button round type="info" size="small" @click="$router.push('/fundDetail/'+buy_frist.fund_code)" class="btn">马上申购</van-button>
         </div>
       </div>
       <div class="selectProject">
@@ -65,7 +54,7 @@
             <div class="selectProjectBottomCenterB">年收益</div>
           </div>
           <div class="selectProjectBottomRight">
-            <div class="selectProjectBottomRightT">{{jingxuan.fund_name}}</div>
+            <div class="selectProjectBottomRightT van-ellipsis">{{jingxuan.fund_name}}</div>
             <div class="selectProjectBottomRightB">控制风险 | 海外资产 | 对冲配置</div>
           </div>
         </div>
@@ -219,15 +208,18 @@ export default {
   margin: 15px 0;
   background: #fff;
   border-radius: 5px;
-  .van-grid-item {
-    .homeNav {
-      font-size: 25px;
-      color: rgba(81, 150, 255, 1);
-      margin-top: 10px;
-    }
-    .van-grid-item__text {
+  color: rgba(51, 51, 51, 1);
+  padding:5px 10px ;
+  .homeNav {
+    width: 30px;
+    height: 30px;
+  }
+  .menu {
+    span {
       font-size: 13px;
-      margin-top: 5px;
+      color: rgba(51, 51, 51, 1);
+      font-family: PingFang-SC-Medium;
+      font-weight: 500;
       color: rgba(51, 51, 51, 1);
     }
   }
@@ -236,9 +228,16 @@ export default {
   border-radius: 5px;
   display: flex;
   padding: 0 15px;
-  background: #fff;
+  background: #fff url(../../../assets/images/bg1.png) no-repeat center top;
+  background-size: cover;
   .recommendedLeft {
     flex: 1;
+    text-align: center;
+    padding: 20px 0;
+    .btn {
+      width: 200px;
+      margin-top: 10px;
+    }
   }
   .recommendedLeftT {
     font-size: 13px;
@@ -246,18 +245,15 @@ export default {
     font-weight: 400;
     color: rgba(153, 153, 153, 1);
     line-height: 20px;
-    margin-top: 20px;
   }
   .recommendedLeftB {
     font-size: 15px;
     font-family: PingFang-SC-Bold;
     font-weight: bold;
     color: rgba(51, 51, 51, 1);
-    line-height: 20px;
-    display: flex;
-    justify-content: space-between;
-    &:nth-child(2) p {
+    &:nth-child(3) {
       color: rgba(255, 89, 65, 1);
+      font-size: 18px;
     }
   }
   .recommendedRight {
@@ -353,6 +349,7 @@ export default {
         color: rgba(51, 51, 51, 1);
         line-height: 18px;
         margin-top: 18px;
+        display: block;
       }
       .selectProjectBottomRightB {
         font-size: 13px;
@@ -371,7 +368,7 @@ export default {
     .typeModelTitle {
       padding: 0 20px;
       height: 48px;
-      line-height: 48px;
+      line-height: 55px;
       display: flex;
       justify-content: space-between;
       .typeModelTitleText {
@@ -430,6 +427,5 @@ export default {
     }
   }
 }
-
 </style>
 

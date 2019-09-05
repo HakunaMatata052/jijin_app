@@ -66,12 +66,6 @@ export default {
     if (this.$METHOD.getStore("token")) {
       this.$router.push("/");
     }
-    if (window.navigator.userAgent.match(/APICloud/i)) {
-      api.setStatusBarStyle({
-        style: "light",
-        color: "rgba(255,255,255,0)"
-      });
-    }
   },
   methods: {
     loginFn() {

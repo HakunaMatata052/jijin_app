@@ -3,8 +3,8 @@
     <navBar :stl="'nobg'" />
     <div class="main">
       <div class="own" :style="'padding-top:'+ top +'px'">
-        <van-uploader :after-read="uploadAvatar" :accept="'image/*'" class="ownHeadImg">
-          <img :src="$store.state.userInfo.user_img || user_img"/>
+        <van-uploader :after-read="uploadAvatar" :accept="'image/*'" class="ownHeadImg" :max-count="1">
+          <img :src="$store.state.userInfo.user_img || user_img" class="img" />
         </van-uploader>
         <div class="ownInfor">
           <span>{{$store.state.userInfo.user_nickname}}</span>
@@ -116,12 +116,21 @@ export default {
       let formData = new FormData();
       formData.append("file", file.file);
       formData.append("token", this.$store.state.token);
-      this.$SERVER.uploadfile(formData).then(res => {
-        this.$toast.success(res.msg)
-        this.$METHOD.updateLocalUserInfo("user_img", res.data.face);
-      }).catch(err=>{
-        this.$toast.success(err.msg)
-      });
+      this.$SERVER
+        .uploadfile(formData)
+        .then(res => {
+          this.$SERVER
+            .faceup({
+              user_img: res.data.face
+            })
+            .then(res2 => {
+              this.$toast.success(res.msg);
+              this.$METHOD.updateLocalUserInfo("user_img", res.data.face);
+            });
+        })
+        .catch(err => {
+          this.$toast.success(err.msg);
+        });
     },
     uploadSuccess(val) {
       var that = this;
@@ -129,6 +138,9 @@ export default {
         that.activePopup.field,
         that.activePopup.value
       );
+    },
+    oversize(){
+       this.$toast.fail("文件大小超出限制！");
     },
     setNickname() {
       this.$SERVER
@@ -140,19 +152,6 @@ export default {
           this.$store.state.userInfo.user_nickname = this.user_nickname;
           this.$METHOD.updateLocalUserInfo("user_nickname", this.user_nickname);
         });
-    },
-    dataURLtoBlob(dataurl) {
-      var arr = dataurl.split(","),
-        mime = arr[0].match(/:(.*?);/)[1],
-        bstr = atob(arr[1]),
-        n = bstr.length,
-        u8arr = new Uint8Array(n);
-      while (n--) {
-        u8arr[n] = bstr.charCodeAt(n);
-      }
-      return new Blob([u8arr], {
-        type: mime
-      });
     }
   },
   activated() {}
@@ -174,9 +173,9 @@ export default {
         height: 70px;
         margin: 0 auto;
         display: block;
-        img {
-          width: 100%;
-          height: 100%;
+        .img {
+          width: 70px;
+          height: 70px;
           border-radius: 50%;
         }
       }

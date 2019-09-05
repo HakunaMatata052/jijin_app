@@ -43,15 +43,6 @@ export default {
     return {};
   },
   created() {},
-  mounted() {
-    var systemType = this.$store.state.systemType;
-    if (systemType == "android") {
-      this.top = 25;
-    }
-    if (systemType == "ios") {
-      this.top = 40;
-    }
-  },
   methods: {}
 };
 </script>

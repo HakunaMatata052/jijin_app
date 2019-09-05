@@ -3,11 +3,11 @@
      <navBar />
   <div class="main">
     <div class="registration">
-      <div class="tipBox">
+      <div class="tipBox" v-if="!$store.state.userInfo.auth">
         <van-icon class-prefix="icon" name="jinggao" class="jinggaoIcon" />
         <div class="tipContent">投资者须知1：根据监管部门规定，基金投资账户需通过实名认证，以保证投资安全。</div>
       </div>
-      <div class="steps">
+      <div class="steps" v-if="!$store.state.userInfo.auth">
         <div class="stepsL active">
           <p class="stepsLT">1</p>
           <p class="stepsLC">实名认证</p>
@@ -31,6 +31,7 @@
         </van-cell-group>
       </form>      
       <van-button type="info" class="btn" :loading="loading" @click="submit" v-if="!$store.state.userInfo.auth">完成认证并设置交易密码</van-button>
+      <van-button type="primary" v-else>已完成实名认证</van-button>
     </div>
   </div>
   </div>

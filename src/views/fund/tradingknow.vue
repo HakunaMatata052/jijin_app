@@ -38,7 +38,7 @@
           <van-grid-item :text="value.redemption" class="thead1" />
         </van-grid>
       </div>
-      <div class="service">
+      <div class="service" @click="$router.push('/chat')">
         <van-icon class-prefix="icon" name="kefu" class="kefu"/>联系客服    
       </div>
     </div>

@@ -70,6 +70,7 @@ export default {
           this.list = [...this.list, ...res.data.stock_log];
         })
         .catch(err => {
+          this.account = err.data.account;
           this.loading = false;
           this.finished = true;
         });

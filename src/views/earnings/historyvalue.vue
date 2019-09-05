@@ -4,7 +4,7 @@
     <div class="main">
       <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="getList">
         <table class="table">
-          <tr>
+          <tr class="sticky">
             <th>日期</th>
                 <th v-if="$route.params.type!='货币型'">单位净值</th>
                 <th v-else>七日年化收益率</th>
@@ -17,7 +17,7 @@
             <td>{{item.jjjz}}</td>
             <td v-if="$route.params.type!='货币型'">{{item.ljjz}}</td>
             <td>
-              <span :class="item.rise==0?'die':'zhang'">{{item.networth}}</span>
+              <span :class="item.rise==0?'die':'zhang'">{{item.networth}}%</span>
             </td>
           </tr>
         </table>
