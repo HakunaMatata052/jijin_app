@@ -24,38 +24,40 @@
 
 <script>
 export default {
-  props: {
-    tabList: {
-      /**
-       * @description: tabItem字段
-       * @param {title} 标题
-       * @param {path} 路由路径
-       * @param {icon} 图标
-       * @param {icon_press} 选中图片
-       * @Date: 2019-03-06 15:41:27
-       */
-      type: Array,
-      default() {
-        return [];
-      },
-      required: true
-    }
-  },
-  // computed:{
-  //   tabActiveIndex(){
-  //     return this.$store.state.tabActiveIndex
-  //   }
-  // },
-  // watch:{
-  //   tabActiveIndex(){
-  //     this.switchTab()
-  //   }
-  // },
   data() {
     return {
-      // tabActiveIndex: 0,
       bottom: 0,
-      show: false
+      show: false,      
+      tabList: [
+        {
+          title: "首页",
+          path: "/",
+          icon: "home",
+          icon_press: "home-active",
+          index: 0
+        },
+        {
+          title: "基金",
+          path: "/fund",
+          icon: "fund",
+          icon_press: "fund-active",
+          index: 1
+        },
+        {
+          title: "收益",
+          path: "/earnings",
+          icon: "earnings",
+          icon_press: "earnings-active",
+          index: 3
+        },
+        {
+          title: "我的",
+          path: "/mine",
+          icon: "mine",
+          icon_press: "mine-active",
+          index: 4
+        }
+      ]
     };
   },
   created() {

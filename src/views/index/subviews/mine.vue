@@ -79,12 +79,12 @@ export default {
         },
         {
           text: "在线客服",
-          path: "/chat",
+          path: "/chat/10000",
           ico: "kefu"
         },
         {
           text: "关于我们",
-          path: "/aboutus",
+          path: "/aboutus/1",
           ico: "guanzhu"
         }
       ],

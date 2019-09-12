@@ -123,11 +123,6 @@ export default {
             .position("time*probability")
             .shape("smooth")
             .color("l(0) 0:#F2C587 0.5:#ED7973 1:#8659AF");
-          chart
-            .area()
-            .position("time*probability")
-            .shape("smooth")
-            .color("l(0) 0:#F2C587 0.5:#ED7973 1:#8659AF");
           // Step 4: 渲染图表
           chart.axis("probability", {
             label: (text, index, total) => {

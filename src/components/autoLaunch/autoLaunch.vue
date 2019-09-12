@@ -1,7 +1,7 @@
 <template>
   <van-swipe indicator-color="white" class="swipe" :loop="false">
     <van-swipe-item v-for="(item,index) in img" :key="index" class="swipe-item" @click="change(index)">
-      <img :src="item" class="img" />
+      <van-image fit="cover" :src="item" class="img" />
     </van-swipe-item>
   </van-swipe>
 </template>

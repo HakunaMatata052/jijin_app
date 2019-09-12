@@ -3,6 +3,7 @@
     <navBar />
     <div class="main">
       <div class="rtansactionrecords">
+        <van-divider v-if="list.length==0">没有交易记录</van-divider>
         <div
           class="rtansactionrecordsM"
           :ref="'item'+index"

@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <navBar />
-    <div class="main" ref="main">
+    <div class="main" ref="main" id="main">
       <div class="myreportdetil">
         <h1>{{info.title}}</h1>
         <div class="myreportdetilTip">
@@ -48,7 +48,8 @@ export default {
           id: id
         })
         .then(res => {
-          this.$refs.main.scrollTo(0, 0);
+          console.log(this.$refs)
+          this.$refs.main.scrollTop=0;
           this.info = res.data;
         });
     }

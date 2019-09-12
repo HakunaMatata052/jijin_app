@@ -8,7 +8,7 @@
       </transition>
     </main>
     <footer>
-      <Tabbar :tabList="tabList"></Tabbar>
+      <Tabbar />
     </footer>
   </div>
 </template>
@@ -26,36 +26,6 @@ export default {
   data() {
     return {
       keepAlive: [],
-      tabList: [
-        {
-          title: "首页",
-          path: "/",
-          icon: "home",
-          icon_press: "home-active",
-          index: 0
-        },
-        {
-          title: "基金",
-          path: "/fund",
-          icon: "fund",
-          icon_press: "fund-active",
-          index: 1
-        },
-        {
-          title: "收益",
-          path: "/earnings",
-          icon: "earnings",
-          icon_press: "earnings-active",
-          index: 3
-        },
-        {
-          title: "我的",
-          path: "/mine",
-          icon: "mine",
-          icon_press: "mine-active",
-          index: 4
-        }
-      ]
     };
   },
   created() {

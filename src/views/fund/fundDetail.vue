@@ -116,7 +116,7 @@
       </van-cell-group>
     </div>
     <van-goods-action class="goods-action" safe-area-inset-bottom>
-      <van-goods-action-icon @click="$router.push('/chat')">
+      <van-goods-action-icon @click="$router.push('/chat/10000')">
         <van-icon class-prefix="icon" name="kefu" class="kefu" />
         <p class="bottomTitle">客服</p>
       </van-goods-action-icon>
@@ -249,11 +249,6 @@ export default {
         .position("fbrq*networth")
         .shape("smooth")
         .color("l(0) 0:#F2C587 0.5:#ED7973 1:#8659AF");
-      chart
-        .area()
-        .position("fbrq*networth")
-        .shape("smooth")
-        .color("l(0) 0:#F2C587 0.5:#ED7973 1:#8659AF");
       chart.interaction("pan");
       chart.interaction("pinch");
 
@@ -275,6 +270,10 @@ export default {
         .stock_like_up({
           type: Number(!type),
           pro_code: this.$route.params.id
+        })
+        .then(res=>{
+
+          console.log(1)
         })
         .catch(err => {
           this.data.like = !this.data.like;

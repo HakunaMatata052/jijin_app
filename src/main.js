@@ -11,7 +11,7 @@ import "../public/js/api.js"; // 引入apiCloud-api
 import "@/icons/index.js"; // 引入svg图标
 import * as method from "@/common/js/mixin.js"; // 引入全局方法
 import API from "@/server/apis.js"; // 引入api接口
-import rongyun from "@/common/js/rongyun.js"; // 引入融云
+// import rongyun from "@/common/js/rongyun.js"; // 引入融云
 import VConsole from "vconsole";
 import Navigation from "vue-navigation"
 // import vueg from 'vueg'    
@@ -19,6 +19,11 @@ import touch from 'vue-directive-touch'
 import Vant from 'vant';
 import 'vant/lib/index.css';
 import 'vant/lib/icon/local.css';  // vant图标库
+import VueSocketIO from 'vue-socket.io'
+Vue.use(new VueSocketIO({
+    debug: true,
+    connection: 'http://192.168.0.122:8080',  //
+}))
 Vue.use(Vant);
 Vue.use(touch);
 // Vue.use(vueg, router)     //←注意这一句应该在router实例化(router = new VueRouter({})之后
@@ -28,7 +33,7 @@ Vue.prototype.$METHOD = method;
 
 Vue.prototype.$SERVER = API;
 // 全局引入融云
-Vue.prototype.$RONGYUN = rongyun;
+// Vue.prototype.$RONGYUN = rongyun;
 
 // 引入路由记录插件
 Vue.use(Navigation, {

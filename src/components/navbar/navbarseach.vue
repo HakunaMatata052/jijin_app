@@ -12,7 +12,7 @@
       @click="searchFn"
       readonly
     />
-    <van-icon class-prefix="icon" name="kefu" class="kefu" @click="$router.push('/chat')" />
+    <van-icon class-prefix="icon" name="kefu" class="kefu" @click="$router.push('/chat/10000')" />
   </div>
 </template>
 <script>

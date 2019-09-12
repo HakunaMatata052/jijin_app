@@ -16,7 +16,7 @@
         class="buyNum"
         v-model.number="money"
         label="填写购买金额"
-        :placeholder="info.stock.minmoney"
+        :placeholder="`最低${info.stock.minmoney}元起购`"
         @input="feilvFn"
         type="number"
         pattern="[0-9]*"
@@ -58,7 +58,13 @@ export default {
   data() {
     return {
       info: {
-        stock: {}
+        stock: {
+          fund_name:"",
+          fund_code: "",
+          minmoney:0,
+        },
+        feilv: "",
+        account: "0"
       },
       money: "",
       checked: false,
@@ -66,18 +72,12 @@ export default {
     };
   },
   created() {
-    this.$toast.loading({
-      mask: true,
-      duration: 0,
-      message: "加载中..."
-    });
     this.$SERVER
       .stockBuy({
         fund_code: this.$route.params.id
       })
       .then(res => {
         this.info = res.data;
-        this.$toast.clear();
       });
   },
   methods: {
@@ -99,6 +99,16 @@ export default {
         this.$toast.fail("请输入金额");
         return;
       }
+      
+      if (this.money < this.info.stock.minmoney) {
+        this.$toast.fail("金额低于最低起购值！");
+        return;
+      }
+      if (this.money > this.info.account) {
+        this.$toast.fail("余额不足！");
+        return;
+      }
+      
       this.$refs.passwordBox.showFn();
     },
     ajaxBuyState(pwd) {

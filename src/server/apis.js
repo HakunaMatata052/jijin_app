@@ -72,13 +72,10 @@ class Api extends Axios {
     return await this.axios("POST", "fundtheme/fund_hot", params);
   }
   async stockBuy(params = {}) {
-    return await this.axios("POST", "Stock/stockBuy", params);
+    return await this.axios("POST", "Stock/stockBuy", params,{LOADINGHIDE:true});
   }
   async profit(params = {}) {
     return await this.axios("POST", "Stocklog/yingkui", params);
-  }
-  async stockBuy(params = {}) {
-    return await this.axios("POST", "Stock/stockBuy", params);
   }
   async liandong(params = {}) {
     return await this.axios("POST", "Stock/liandong", params);
@@ -124,13 +121,18 @@ class Api extends Axios {
   }
   async ProfitIndex(params = {}) {
     return await this.axios("POST", "Profit/index", params);
-  }
-  
+  }  
   async Publiccon(params = {}) {
     return await this.axios("POST", "Publiccon/index", params);
   }
   async chart_day(params = {}) {
     return await this.axios("POST", "Profit/chart_day", params);
+  }
+  async appeal(params = {}) {
+    return await this.axios("POST", "Publiccon/appeal", params,{LOADINGHIDE:true});
+  }
+  async spread(params = {}) {
+    return await this.axios("POST", "User/spread", params,{LOADINGHIDE:true});
   }
   
 }

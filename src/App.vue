@@ -2,11 +2,11 @@
   <div id="app">
     <!-- 全局组件 -->
     <transition name="van-fade">
-      <autoLaunch v-show="show" @complete="complete" />
+      <autoLaunch v-if="show" @complete="complete" />
     </transition>
     <transition :name="transitionName">
       <keep-alive :max="10" :include="keepAlive">
-        <router-view v-show="!show"></router-view>
+        <router-view v-if="!show"></router-view>
       </keep-alive>
     </transition>
   </div>
@@ -25,7 +25,8 @@ export default {
     return {
       show: true,
       transitionName: "",
-      keepAlive: []
+      keepAlive: [],
+      id: ""
     };
   },
   created() {
@@ -63,6 +64,23 @@ export default {
   },
   mounted() {
     // console.log(this.keepAlive); // 设置缓存匹配
+  },
+  sockets: {
+    connect() {
+      this.id = this.$socket.id;
+      this.$socket.emit("setRoom", { roomId: this.$store.state.userInfo.user_id}); //监听connect事件
+    },
+    message(data) {
+      //监听message事件，方法是后台定义和提供的
+      console.log(123456)
+      api.notification({
+        notify: {
+          title: "通知标题",
+          content: data
+        }
+      });
+      console.log(data);
+    }
   },
   methods: {
     complete() {
@@ -130,9 +148,8 @@ export default {
 
 <style lang="less" scope>
 #app {
-  font-family: "PingFang-SC-Medium" ,"Microsoft YaHei", Helvetica,
-    Tahoma, Arial, "Hiragino Sans GB", "Heiti SC", "WenQuanYi Micro Hei",
-    sans-serif;
+  font-family: "PingFang-SC-Medium", "Microsoft YaHei", Helvetica, Tahoma, Arial,
+    "Hiragino Sans GB", "Heiti SC", "WenQuanYi Micro Hei", sans-serif;
   height: 100%;
 }
 .slide-right-enter-active,

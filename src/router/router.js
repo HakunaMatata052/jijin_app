@@ -4,7 +4,7 @@ import {
   Toast
 } from "vant";
 Vue.use(Toast);
-
+import $store from "../store/store.js";
 // tarBar ----- 子页面
 import Index from "@/views/index/index.vue";
 // 内嵌组件
@@ -32,7 +32,8 @@ const router = new Router({
             isTransition: true,
             title:"首页",
             isMember: false,
-            isLogin:false
+            isLogin:false,
+            index:0
           }
         },
         {
@@ -44,7 +45,8 @@ const router = new Router({
             isTransition: true,
             title:"基金",
             isMember: false,
-            isLogin:false
+            isLogin:false,
+            index:1
           }
         },
         {
@@ -56,7 +58,8 @@ const router = new Router({
             isTransition: true,
             title:"收益",
             isMember: false,
-            isLogin:true
+            isLogin:true,
+            index:2
           }
         },
         {
@@ -68,7 +71,8 @@ const router = new Router({
             isTransition: true,
             title:"我的",
             isMember: false,
-            isLogin:true
+            isLogin:true,
+            index:3
           },
         }
       ]
@@ -483,7 +487,7 @@ const router = new Router({
     },
     // 关于我们
     {
-      path: "/aboutus",
+      path: "/aboutus/:type",
       name:"aboutus",
       component: () => import("@/views/mine/aboutus.vue"),
       meta: {
@@ -569,7 +573,7 @@ const router = new Router({
       }
     },
     {
-      path: "/chat",
+      path: "/chat/:id",
       name:"chat",
       component: () => import("@/views/message/chat.vue"),
       meta: {
@@ -595,6 +599,9 @@ const router = new Router({
   ]
 });
 router.beforeEach((to, from, next) => {
+  if(to.meta.index){
+    $store.state.tabActiveIndex = to.meta.index
+  }
   if (to.meta.isLogin) {
     if (!window.localStorage.getItem('token')) {
       if(from.name=="login"){

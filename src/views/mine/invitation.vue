@@ -1,31 +1,36 @@
 <template>
-<div class="container">
-   <navBar />
-  <div class="main">   
-    <div class="toptip">
-      <van-grid :column-num="3">
-        <van-grid-item v-for="value in chartNav" :key="value">
-          <template slot="text">
-            <p>{{value.title}}</p>
-            <p>{{value.per}}</p>
-          </template>
-        </van-grid-item>
-      </van-grid>
-      <div class="bottom">
-        <p>邀请用户注册赢取体验金</p>
-        <p>扫描下载APP</p>
-        <div class="wxcode"></div>
-        <div class="sharbtn">
-          <div>保存二维码</div>
-          <div>复制推广链接</div>
-        </div>
+  <div class="container">
+    <navBar />
+    <div class="main">
+      <div class="help" @click="$router.push('/aboutus/4')">帮助</div>
+      <div class="info">
+        <dl>
+          <dt>我的会员人数</dt>
+          <dd>{{info.my_vip_count}}</dd>
+        </dl>
+        <dl>
+          <dt>我的累计收益</dt>
+          <dd>{{info.zong_yingkui}}</dd>
+        </dl>
+        <dl>
+          <dt>本月收益</dt>
+          <dd>{{info.month_yingkui}}</dd>
+        </dl>
+      </div>
+      <h3>扫码下放二维码</h3>
+      <div class="qrcode">
+        <img src alt />
+      </div>
+      <div class="btn-group">
+        <div class="btn" @click="saveimg">保存二维码</div>
+        <div class="btn" @click="copyFn">复制推广链接</div>
       </div>
     </div>
-  </div>
   </div>
 </template>
 
 <script>
+import copy from "clipboard-copy";
 import navBar from "@/components/navbar/navbar.vue";
 export default {
   name: "invitation",
@@ -34,78 +39,128 @@ export default {
   },
   data() {
     return {
-      chartNav: [
-        {
-          title: "我的会员人数",
-          per: "20"
-        },
-        {
-          title: "我的累计收益",
-          per: "2,000"
-        },
-        {
-          title: "本月收益",
-          per: "2,000"
-        }
-      ]
+      info: {}
     };
   },
-  created() {},
-  methods: {}
+  created() {
+    this.$SERVER.spread().then(res => {
+      this.info = res.data;
+    });
+  },
+  methods: {
+    saveimg() {
+      var that = this;
+      if (window.navigator.userAgent.match(/APICloud/i)) {
+        api.download(
+          {
+            url: this.info.down_url,
+            report: true,
+            cache: true,
+            allowResume: true
+          },
+          function(ret, err) {
+            if (ret.percent == 100) {
+              api.saveMediaToAlbum(
+                {
+                  path: ret.savePath
+                },
+                function(albumret, albumreterr) {
+                  if (albumret && albumret.status) {
+                    that.$toast.success("保存成功!");
+                  }
+                }
+              );
+            }
+          }
+        );
+      }
+    },
+    copyFn() {
+      copy(this.info.register_url);
+      this.$toast.success("复制成功!");
+    }
+  }
 };
 </script>
 
 <style lang="less" scoped>
-.toptip {
-  margin-top: 16px;
-  .van-grid-item__content--center {
-    p:nth-child(1) {
-      font-size: 15px;
-      color: rgba(153, 153, 153, 1);
-    }
-    p:nth-child(2) {
-      font-size: 17px;
-      margin-top: 3px;
-      color: rgba(51, 51, 51, 1);
+.main {
+  background: #1764e4 url(../../assets/images/bg1.jpg) no-repeat center top;
+  background-size: 100%;
+  .help {
+    width: 47px;
+    height: 27px;
+    line-height: 27px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    font-size: 13px;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 1);
+    position: absolute;
+    right: 17px;
+    top: 17px;
+  }
+  .info {
+    margin-top: 190px;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    dl {
+      width: 33%;
+      height: 70px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 5px 5px 0 rgba(29, 104, 231, 1);
+      display: flex;
+      flex-flow: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      dt {
+        font-size: 15px;
+        font-weight: 400;
+        color: rgba(73, 156, 252, 1);
+      }
+      dd {
+        font-size: 17px;
+        font-weight: bold;
+        color: rgba(24, 97, 221, 1);
+      }
     }
   }
-  .bottom {
-    font-family: PingFang-SC-Medium;
-    font-weight: 500;
+  h3 {
+    margin: 30px auto 20px;
+    font-size: 25px;
+    font-family: HYJinKaiJ;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 1);
     text-align: center;
-    p:nth-child(1) {
-      font-size: 25px;
-      color: rgba(81, 150, 255, 1);
-      margin: 50px 0;
+  }
+  .qrcode {
+    text-align: center;
+    img {
+      width: 180px;
+      height: 180px;
+      border: 10px solid rgba(255, 255, 255, 0.33);
     }
-    p:nth-child(2) {
+  }
+  .btn-group {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 40px;
+    margin-top: 40px;
+    .btn {
+      width: 140px;
+      height: 40px;
+      line-height: 40px;
+      text-align: center;
+      background: rgba(255, 230, 3, 1);
+      border: 1px solid rgba(204, 204, 204, 1);
+      border-radius: 20px;
       font-size: 15px;
-      color: rgba(153, 153, 153, 1);
-      margin-bottom: 19px;
-    }
-    .wxcode {
-      width: 200px;
-      height: 200px;
-      background: #fff;
-      margin: 0 auto 30px auto;
-    }
-    .sharbtn {
-      display: flex;
-      justify-content: space-between;
-      margin: 0 55px;
-      div {
-        width: 115px;
-        height: 30px;
-        background: rgba(245, 245, 245, 1);
-        border: 1px solid rgba(204, 204, 204, 1);
-        border-radius: 2px;
-        line-height: 30px;
-        text-align: center;
-        font-size: 13px;
-        font-family: PingFang-SC-Regular;
-        font-weight: 400;
-        color: rgba(153, 153, 153, 1);
-      }
+      font-weight: 400;
+      color: rgba(33, 107, 230, 1);
     }
   }
 }

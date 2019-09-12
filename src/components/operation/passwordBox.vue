@@ -4,7 +4,7 @@
     <p>请输入交易密码</p>
     <van-password-input :value="password" :length="maxlength" />
     <!-- 数字键盘 -->
-    <van-number-keyboard v-model="password" class="number-keyboard" :maxlength="maxlength" :show="true" title="安全键盘"/>
+    <van-number-keyboard v-model="password" class="number-keyboard" :maxlength="maxlength" :show="true" title="安全键盘" safe-area-inset-bottom/>
   </van-popup>
 </template>
 

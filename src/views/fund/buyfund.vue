@@ -162,11 +162,6 @@ export default {
             .position("fbrq*networth")
             .shape("smooth")
             .color("l(0) 0:#F2C587 0.5:#ED7973 1:#8659AF");
-          chart
-            .area()
-            .position("fbrq*networth")
-            .shape("smooth")
-            .color("l(0) 0:#F2C587 0.5:#ED7973 1:#8659AF");
           // Step 4: 渲染图表
           chart.axis("networth", {
             label: (text, index, total) => {

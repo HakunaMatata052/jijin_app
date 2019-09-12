@@ -62,6 +62,10 @@
           已有账号，
           <span @click="$router.push('/login')">立即登录</span>
         </div>
+        <p>
+          注册即同意
+          <span @click="$router.push('/aboutus/3')">《用户协议》</span>
+        </p>
       </div>
     </div>
   </div>
@@ -133,7 +137,6 @@ export default {
         return;
       }
       that.$router.push("/registerPassword");
-
     }
   },
   destroyed() {
@@ -185,8 +188,6 @@ export default {
       }
     }
   }
-  .field {
-  }
   .checknumbtn {
     background: rgba(81, 150, 255, 1);
     border: 0;
@@ -206,6 +207,16 @@ export default {
     text-align: center;
     margin-top: 50px;
     color: #999;
+    span {
+      text-decoration: underline;
+      color: rgba(81, 150, 255, 1);
+    }
+  }
+  p {
+    text-align: center;
+    margin-top: 10px;
+    color: #999;
+    font-size: 14px;
     span {
       text-decoration: underline;
       color: rgba(81, 150, 255, 1);

@@ -24,7 +24,7 @@
         <van-pull-refresh v-model="refreshLoading" @refresh="getList(true)">
           <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="getList">
             <div class="fundList">
-              <van-sticky :offset-top="54+44+top">
+              <van-sticky :offset-top="50+44+top">
                 <div class="fundListTitle">
                   <div class="fundName">基金简称</div>
                   <div class="addedValue" v-if="activeType=='货币型'">万分收益</div>

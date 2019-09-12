@@ -121,11 +121,16 @@ export default class Axios {
         res => {
           if (res.data.code == 1) {
             resolve(res.data);
-          } else if(res.data.code == 201){            
+          } else if(res.data.code == 201){
             Toast.fail(res.data.msg);
             setTimeout(() => {
-              router.push("/");
+              router.push("/registration");
             }, 1000);            
+          }else if(res.data.code == 202){
+            Toast.fail(res.data.msg);
+            setTimeout(() => {
+              router.push("/setPayPassword");
+            }, 1000);  
           }else {
             Toast.fail(res.data.msg);
             reject(res.data)
