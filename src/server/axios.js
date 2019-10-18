@@ -57,7 +57,6 @@ axios.interceptors.response.use(
     return res;
   },
   error => {
-    console.log(error);
     Toast.clear();
     if (error) {
       // 请求配置发生的错误

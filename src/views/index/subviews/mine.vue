@@ -3,7 +3,12 @@
     <navBar :stl="'nobg'" />
     <div class="main">
       <div class="own" :style="'padding-top:'+ top +'px'">
-        <van-uploader :after-read="uploadAvatar" :accept="'image/*'" class="ownHeadImg" :max-count="1">
+        <van-uploader
+          :after-read="uploadAvatar"
+          :accept="'image/*'"
+          class="ownHeadImg"
+          :max-count="1"
+        >
           <img :src="$store.state.userInfo.user_img || user_img" class="img" />
         </van-uploader>
         <div class="ownInfor">
@@ -53,6 +58,11 @@ export default {
       },
       mineList: [
         {
+          text: "我的账户",
+          path: "/touchbalance",
+          ico: "account"
+        },
+        {
           text: "修改支付密码",
           path: "/setPayPassword",
           ico: "mima"
@@ -84,13 +94,20 @@ export default {
         },
         {
           text: "关于我们",
-          path: "/aboutus/1",
+          path: "/aboutus/91",
           ico: "guanzhu"
         }
       ],
       isShow: false,
       user_nickname: this.$store.state.userInfo.user_nickname
     };
+  },
+  created() {
+    this.$SERVER.paypwd_state().then(res => {
+      if (res.data == 0) {
+        this.mineList[1].path = "/transaction";
+      }
+    });
   },
   mounted() {
     var systemType = this.$store.state.systemType;
@@ -105,8 +122,6 @@ export default {
   methods: {
     logout() {
       this.$METHOD.removeStore("token");
-      this.$METHOD.removeStore("userInfo");
-      this.$METHOD.removeStore("rongyunToken");
       this.$store.state.userInfo = {};
       this.$toast.success("退出成功！");
       this.$router.push("/");
@@ -129,7 +144,7 @@ export default {
             });
         })
         .catch(err => {
-          this.$toast.success(err.msg);
+          this.$toast.fail(err.msg);
         });
     },
     uploadSuccess(val) {
@@ -139,8 +154,8 @@ export default {
         that.activePopup.value
       );
     },
-    oversize(){
-       this.$toast.fail("文件大小超出限制！");
+    oversize() {
+      this.$toast.fail("文件大小超出限制！");
     },
     setNickname() {
       this.$SERVER

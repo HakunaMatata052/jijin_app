@@ -2,7 +2,7 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router/router";
 import store from "./store/store";
-import "./registerServiceWorker"; // pwa
+// import "./registerServiceWorker"; // pwa
 import "@/common/styles/base.css"; // 样式初始化
 // 全局样式
 import "@/common/styles/mixin.less";
@@ -19,11 +19,11 @@ import touch from 'vue-directive-touch'
 import Vant from 'vant';
 import 'vant/lib/index.css';
 import 'vant/lib/icon/local.css';  // vant图标库
-import VueSocketIO from 'vue-socket.io'
-Vue.use(new VueSocketIO({
-    debug: true,
-    connection: 'http://192.168.0.122:8080',  //
-}))
+// import VueSocketIO from 'vue-socket.io'
+// Vue.use(new VueSocketIO({
+//     debug: true,
+//     connection: 'http://192.168.0.122:8080',  //
+// }))
 Vue.use(Vant);
 Vue.use(touch);
 // Vue.use(vueg, router)     //←注意这一句应该在router实例化(router = new VueRouter({})之后

@@ -2,7 +2,7 @@
   <div class="container">
     <navBar />
     <div class="main">
-      <div class="help" @click="$router.push('/aboutus/4')">帮助</div>
+      <div class="help" @click="$router.push('/aboutus/93')">帮助</div>
       <div class="info">
         <dl>
           <dt>我的会员人数</dt>
@@ -17,9 +17,9 @@
           <dd>{{info.month_yingkui}}</dd>
         </dl>
       </div>
-      <h3>扫码下放二维码</h3>
+      <h3>扫码下方二维码</h3>
       <div class="qrcode">
-        <img src alt />
+        <img :src="info.down_url" alt />
       </div>
       <div class="btn-group">
         <div class="btn" @click="saveimg">保存二维码</div>
@@ -76,8 +76,24 @@ export default {
       }
     },
     copyFn() {
-      copy(this.info.register_url);
-      this.$toast.success("复制成功!");
+      var that = this
+      if (window.navigator.userAgent.match(/APICloud/i)) {
+        var clipBoard = api.require("clipBoard");
+        clipBoard.set(
+          {
+            value: that.info.register_url
+          },
+          function(ret, err) {
+            if (ret) {
+              that.$toast.success("复制成功!");
+            } else {
+            }
+          }
+        );
+      } else {
+        copy(that.info.register_url);
+        that.$toast.success("复制成功!");
+      }
     }
   }
 };
@@ -87,6 +103,7 @@ export default {
 .main {
   background: #1764e4 url(../../assets/images/bg1.jpg) no-repeat center top;
   background-size: 100%;
+  overflow: hidden;
   .help {
     width: 47px;
     height: 27px;
@@ -140,8 +157,8 @@ export default {
   .qrcode {
     text-align: center;
     img {
-      width: 180px;
-      height: 180px;
+      width: 140px;
+      height: 140px;
       border: 10px solid rgba(255, 255, 255, 0.33);
     }
   }

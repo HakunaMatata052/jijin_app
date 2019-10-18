@@ -26,7 +26,7 @@
         <van-cell clickable>
           <template slot="title">
             使用账户余额（可用余额
-            <span class="custom-t">{{info.account}}</span>)
+            <span class="custom-t">{{info.account}}</span>+<span class="custom-t">{{info.tyj}}</span>)
           </template>
           <!-- <van-switch v-model="checked" size="24px" slot="right-icon" /> -->
         </van-cell>
@@ -99,12 +99,11 @@ export default {
         this.$toast.fail("请输入金额");
         return;
       }
-      
       if (this.money < this.info.stock.minmoney) {
         this.$toast.fail("金额低于最低起购值！");
         return;
       }
-      if (this.money > this.info.account) {
+      if (this.money >  (this.info.account+this.info.tyj)) {
         this.$toast.fail("余额不足！");
         return;
       }

@@ -5,21 +5,23 @@
       <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="getList">
         <table class="table">
           <tr class="sticky">
-            <th>日期</th>
+                <th>日期</th>
                 <th v-if="$route.params.type!='货币型'">单位净值</th>
                 <th v-else>七日年化收益率</th>
                 <th v-if="$route.params.type!='货币型'">累计净值</th>
                 <th v-if="$route.params.type!='货币型'">日涨跌</th>
                 <th v-else>万份收益</th>
-          </tr>
-          <tr v-for="(item,index) in list" :key="index">
-            <td>{{item.fbrq}}</td>
-            <td>{{item.jjjz}}</td>
-            <td v-if="$route.params.type!='货币型'">{{item.ljjz}}</td>
-            <td>
-              <span :class="item.rise==0?'die':'zhang'">{{item.networth}}%</span>
-            </td>
-          </tr>
+              </tr>
+              <tr v-for="(item,index) in list" :key="index">
+                <td>{{item.fbrq}}</td>				
+                <td v-if="$route.params.type!='货币型'">{{item.jjjz}}</td>
+                <td v-else>{{item.networth}}%</td>
+                <td v-if="$route.params.type!='货币型'">{{item.ljjz}}</td>
+                <td v-if="$route.params.type!='货币型'">
+                  <div :class="item.rise==0?'die':'zhang'"><span v-if="item.rise>0">+</span>{{item.networth}}%</div>
+                </td>
+				<td v-else>{{item.jjjz}}</td>	
+              </tr>
         </table>
       </van-list>
     </div>

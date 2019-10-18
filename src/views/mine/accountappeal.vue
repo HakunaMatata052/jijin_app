@@ -36,10 +36,7 @@
         <van-field label="您的姓名" v-model="form.real_name" placeholder="请输入您的姓名" />
         <van-field label="身份证号" v-model="form.user_id_card" placeholder="请输入身份证号码" />
         <van-field label="新手机号" v-model="form.user_account" placeholder="请输入新的手机号" />
-        <van-field class="phone" v-model="form.captcha" center clearable placeholder="请输入短信验证码">
-          <template slot="label">
-            <van-icon class-prefix="icon" name="anquan" class="anquanIcon" />
-          </template>
+        <van-field label="验证码" class="phone" v-model="form.captcha" center clearable placeholder="请输入短信验证码">
           <van-button
             slot="button"
             size="small"

@@ -56,6 +56,35 @@ export default {
       api.removeLaunchView({
         animation: { type: "fade", duration: 0 }
       });
+      // 更新
+      api.addEventListener(
+        {
+          name: "smartupdatefinish"
+        },
+        function(ret, err) {
+          that.$dialog
+            .confirm({
+              title: "更新",
+              message: "APP更新完成，是否现在重启？"
+            })
+            .then(() => {
+              api.rebootApp();
+            });
+        }
+      );
+      var push = api.require("push");
+      push.setListener(function(ret, err) {
+        if (ret) {
+          //仅提示音
+          api.notification({
+            sound: "default",
+            notify: {
+              title: "通知",
+              content: ret.data
+            }
+          });
+        }
+      });
     }
     this.setVux();
     if (this.$METHOD.getStore("first")) {
@@ -68,11 +97,13 @@ export default {
   sockets: {
     connect() {
       this.id = this.$socket.id;
-      this.$socket.emit("setRoom", { roomId: this.$store.state.userInfo.user_id}); //监听connect事件
+      this.$socket.emit("setRoom", {
+        roomId: this.$store.state.userInfo.user_id
+      }); //监听connect事件
     },
     message(data) {
       //监听message事件，方法是后台定义和提供的
-      console.log(123456)
+      console.log(123456);
       api.notification({
         notify: {
           title: "通知标题",
@@ -135,11 +166,11 @@ export default {
       });
     },
     setVux() {
-      this.$store.state.token = this.$METHOD.getStore("token");
-      if (this.$METHOD.getStore("userInfo")) {
-        this.$store.state.userInfo = JSON.parse(
-          this.$METHOD.getStore("userInfo")
-        );
+      if (this.$METHOD.getStore("token")) {
+        this.$store.state.token = this.$METHOD.getStore("token");
+        this.$SERVER.getUserinfo().then(res => {
+          this.$store.state.userInfo = res.data;
+        });
       }
     }
   }

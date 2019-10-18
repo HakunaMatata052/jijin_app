@@ -37,7 +37,7 @@
         <dd>{{data.leijishouyi}}</dd>
       </dl>
     </div>
-    <van-cell class="balance">
+    <van-cell class="balance" to="/touchbalance">
       <template slot="title">
         <span class="custom-title">账户余额</span>
         <span class="custom-num">{{data.zhanghuyue}}元</span>
@@ -64,7 +64,7 @@
     </van-row>
     <van-row type="flex">
       <van-col span="12">
-        <van-cell>
+        <van-cell to="/mytreasure">
           <template slot="title">
             <span class="custom-title">现金宝</span>
             <span class="custom-num">{{data.xianjinbao}}元</span>

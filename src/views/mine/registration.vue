@@ -49,7 +49,7 @@
           @click="submit"
           v-if="!$store.state.userInfo.auth"
         >完成认证并设置交易密码</van-button>
-        <van-button type="primary" class="fbtn" v-else>已完成实名认证</van-button>
+        <van-button type="primary" class="fbtn" v-if="$store.state.userInfo.auth&&!paypwd_state" @click="setPassWord">设置交易密码</van-button>
       </div>
     </div>
   </div>
@@ -69,12 +69,16 @@ export default {
       form: {
         user_real_name: null,
         user_id_card: null
-      }
+      },
+      paypwd_state: 0
     };
   },
   created() {
-    this.form.user_real_name = this.$store.state.userInfo.user_real_name
-    this.form.user_id_card = this.$store.state.userInfo.user_id_card
+    this.form.user_real_name = this.$store.state.userInfo.user_real_name;
+    this.form.user_id_card = this.$store.state.userInfo.user_id_card;
+    this.$SERVER.paypwd_state().then(res => {
+      this.paypwd_state = res.data;
+    });
   },
   methods: {
     submit() {
@@ -94,20 +98,31 @@ export default {
           this.$toast.success("认证成功！");
           this.$METHOD.updateLocalUserInfo(
             "user_real_name",
-            res.data.user_real_name
+            this.form.user_real_name
           );
           this.$METHOD.updateLocalUserInfo(
             "user_id_card",
-            res.data.user_id_card
+            this.form.user_id_card
           );
+          if (this.paypwd_state == 0) {
+            this.$router.push("/transaction");
+          } else {
+            this.$router.push("/setPayPassword");
+          }
           this.$METHOD.updateLocalUserInfo("auth", 1);
-          this.$router.push("/setPayPassword");
         })
         .catch(err => {
           this.$METHOD.updateLocalUserInfo("user_real_name", null);
           this.$METHOD.updateLocalUserInfo("user_id_card", null);
           this.loading = false;
         });
+    },
+    setPassWord() {
+      if (this.paypwd_state == 0) {
+        this.$router.push("/transaction");
+      } else {
+        this.$router.push("/setPayPassword");
+      }
     }
   }
 };

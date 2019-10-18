@@ -14,6 +14,7 @@
           placeholder="请输入手机号"
         />
         <van-field
+          label="验证码"
           class="phone"
           center
           clearable
@@ -22,9 +23,7 @@
           pattern="[0-9]*"
           placeholder="请输入短信验证码"
         >
-          <template slot="label">
-            <van-icon class-prefix="icon" name="anquan" class="anquanIcon" />
-          </template>
+
           <van-button
             slot="button"
             size="small"
@@ -64,6 +63,13 @@ export default {
       countDown: 60,
       timer: null
     };
+  },
+  created(){
+    this.$SERVER.paypwd_state().then(res=>{
+      if(res.data==0){
+        this.$router.push("/transaction");
+      }
+    })
   },
   destroyed() {
     clearInterval(this.timer);

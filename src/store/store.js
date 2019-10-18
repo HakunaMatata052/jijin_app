@@ -11,7 +11,7 @@ export default new Vuex.Store({
     color: "rgba(81,150,255,1)",   //全局颜色
     navAn:"slide-left",  
     userInfo: {
-      userid: ""
+      user_id: ""
     },
     isMember: false,   //是否是会员
     position: {      //默认定位

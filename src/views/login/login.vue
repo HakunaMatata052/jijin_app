@@ -3,7 +3,7 @@
     <navBar :stl="'nobg'" title />
 
     <div class="login">
-      <img class="logoImg" src="../../assets/images/indexchart.png" />
+      <img class="logoImg" :src="logo" />
       <div class="main">
         <h1>登录</h1>
         <van-cell-group class="cell-group" :border="false">
@@ -41,13 +41,15 @@
           class="loginbtn"
           :hairline="false"
         >立即登录</van-button>
-        <div class="sigIn" @click="$router.push('/register')">用户注册</div>
+        <div class="sigIn"><span @click="$router.push('/register')">用户注册</span></div>
       </div>
     </div>
   </div>
 </template>
 <script>
+import regexUtil from "regex-util";
 import navBar from "@/components/navbar/navbar.vue";
+import logo from "@/assets/images/logo.png";
 export default {
   name: "login",
   components: {
@@ -55,6 +57,7 @@ export default {
   },
   data() {
     return {
+      logo:logo,
       form: {
         user_account: "",
         user_pwd: ""
@@ -70,13 +73,20 @@ export default {
   methods: {
     loginFn() {
       var that = this;
+      if (!regexUtil.isPhone(that.form.user_account)) {
+        this.$toast.fail("请输入正确的手机号码");
+        return;
+      }
+      if(that.form.user_pwd.length==0){
+        this.$toast.fail("请填写密码");
+        return;
+      }
       that.loginLoading = true;
       that.$SERVER
         .login(that.form)
         .then(res => {
           that.$toast.success("登录成功");
           that.$METHOD.setStore("token", res.data.userinfo.token);
-          that.$METHOD.setStore("userInfo", res.data.userinfo_first);
           that.$store.state.token = res.data.userinfo.token;
           that.$store.state.userInfo = res.data.userinfo_first;
           that.loginLoading = false;

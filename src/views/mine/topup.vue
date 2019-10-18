@@ -1,54 +1,85 @@
 <template>
-<div class="container">
-     <navBar :title="json.title"/>
-  <div class="main">
-    <van-cell-group class="money">
-      <h1>{{json.title}}</h1>
-      <van-field v-model="value" placeholder="请输入充值金额" />
-    </van-cell-group>
-    <van-cell is-link class="bank">
-      <template slot="title">
-        <span class="custom-title">{{json.title3}}</span>
-      </template>
-      <template slot="default">
-        <span class="custom-title">建设银行 230</span>
-      </template>
-    </van-cell>
-    <div class="updata">提交</div>
-  </div>
+  <div class="container">
+    <navBar :title="json.title" />
+    <div class="main">
+      <van-cell-group class="money">
+        <h1>{{json.title}}</h1>
+        <van-field v-model.number="withdraw_price" :placeholder="`请输入${json.title}金额`" type="number" pattern="[0-9]*" />
+      </van-cell-group>
+      <van-cell is-link class="bank">
+        <template slot="title">
+          <span class="custom-title">{{json.title3}}</span>
+        </template>
+        <template slot="default">
+          <span
+            class="custom-title"
+          >{{$store.state.userInfo.bank_name}} {{$store.state.userInfo.bank_card_number.substr($store.state.userInfo.bank_card_number.length-4)}}</span>
+        </template>
+      </van-cell>
+      <div class="updata" @click="submit">提交</div>
+    </div>
+    <password-box ref="passwordBox" @onSuccess="tixian" />
   </div>
 </template>
 
 <script>
 import navBar from "@/components/navbar/navbar.vue";
+import passwordBox from "@/components/operation/passwordBox.vue";
 export default {
   name: "topup",
   components: {
-    navBar
+    navBar,
+    passwordBox
   },
   data() {
-    var param = this.$route.query.id
-    console.log(param)
-     var json
-    if(param==1){
+    var param = this.$route.query.id;
+    var json;
+    if (param == 1) {
       json = {
-        title:"充值",
-        title1:"充值金额",
-        title3:"付款方式",
-        title4:"请输入充值金额"
-      }
-    }else{
+        title: "充值",
+        title1: "充值金额",
+        title3: "付款方式",
+        title4: "请输入充值金额"
+      };
+    } else {
       json = {
-        title:"提现",
-        title1:"提现金额",
-        title3:"提现至",
-        title4:"当前可提现金额2000.00元"
-      }
+        title: "提现",
+        title1: "提现金额",
+        title3: "提现至",
+        title4: "当前可提现金额2000.00元"
+      };
     }
-    console.log(json)
-    return {json};
+    return {
+      json,
+      withdraw_price: ""
+    };
   },
-}
+  methods: {
+    submit() {
+      if (this.withdraw_price.length == 0) {
+        this.$toast.fail("请输入金额");
+        return;
+      }
+      if(!this.$store.state.userInfo.bank_card_number || this.$store.state.userInfo.bank_card_number.length == 0){
+        this.$toast.fail("请先绑定银行卡");
+        this.$router.push('/bankup')
+        return;
+      }
+      this.$refs.passwordBox.showFn();
+    },
+    tixian(pwd) {
+      this.$SERVER
+        .withdraw({
+          withdraw_price: this.withdraw_price,
+          pay_pwd:pwd
+        })
+        .then(res => {
+          this.$toast.success(res.msg);
+          this.$router.push("/");
+        });
+    }
+  }
+};
 </script>
 
 <style lang="less" scoped>

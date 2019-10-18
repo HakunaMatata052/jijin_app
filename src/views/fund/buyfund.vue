@@ -87,7 +87,6 @@
 <script>
 import navBar from "@/components/navbar/navbar.vue";
 import F2 from "@antv/f2/lib/index";
-import "@antv/f2/lib/interaction";
 export default {
   name: "buyfund",
   components: {
@@ -141,9 +140,6 @@ export default {
             id: "myChart",
             pixelRatio: window.devicePixelRatio // 指定分辨率
           });
-          chart.legend(false); // 不使用默认图例
-          chart.interaction("pan");
-          chart.interaction("pinch");
 
           // Step 2: 载入数据源
           chart.source(this.data, {
@@ -152,16 +148,32 @@ export default {
               tickCount: 3,
               range: [0, 1]
             },
-            jjjz: {
-              tickCount: 10
+            networth: {
+              // tickCount: 10              
+              alias: "收益率"
+            }
+          });
+          chart.tooltip({
+            custom: true,
+            showXTip: true,
+            showYTip: true,
+            snap: true,
+            crosshairsType: "xy",
+            crosshairsStyle: {
+              lineDash: [2]
+            },
+            onShow(ev) {
+              var items = ev.items;
+              items[0].name = null;
+              items[0].value = items[0].value+"%";
             }
           });
           // Step 3：创建图形语法，绘制柱状图，由 genre 和 sold 两个属性决定图形位置，genre 映射至 x 轴，sold 映射至 y 轴
           chart
             .line()
             .position("fbrq*networth")
-            .shape("smooth")
-            .color("l(0) 0:#F2C587 0.5:#ED7973 1:#8659AF");
+            // .shape("smooth")
+            .color("#5196ff");
           // Step 4: 渲染图表
           chart.axis("networth", {
             label: (text, index, total) => {

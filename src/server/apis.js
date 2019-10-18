@@ -30,7 +30,7 @@ class Api extends Axios {
     return await this.axios("POST", "Stock/stock_like_list", params);
   }
   async stock_index(params = {}) {
-    return await this.axios("POST", "Stock/stock_index", params,{LOADINGHIDE:true});
+    return await this.axios("POST", "Stock/stock_index", params);
   }
   async funddetails(params = {}) {
     return await this.axios("POST", "funddetails/index", params,{LOADINGHIDE:true});
@@ -129,10 +129,30 @@ class Api extends Axios {
     return await this.axios("POST", "Profit/chart_day", params);
   }
   async appeal(params = {}) {
-    return await this.axios("POST", "Publiccon/appeal", params,{LOADINGHIDE:true});
+    return await this.axios("POST", "Publiccon/appeal", params);
   }
   async spread(params = {}) {
-    return await this.axios("POST", "User/spread", params,{LOADINGHIDE:true});
+    return await this.axios("POST", "User/spread", params);
+  }
+  async withdraw(params = {}) {
+    return await this.axios("POST", "Money/withdraw", params,{LOADINGHIDE:true});
+  }
+
+  async getUserinfo(params = {}) {
+    return await this.axios("POST", "User/getUserinfo", params);
+  }
+  async paypwd_state(params = {}) {
+    return await this.axios("POST", "User/paypwd_state", params);
+  }
+  async stock_recode(params = {}) {
+    return await this.axios("POST", "Stock/stock_recode", params);
+  }
+  async stock_jingzhi_k(params = {}) {
+    return await this.axios("POST", "Stock/stock_jingzhi_k", params);
+  }
+  
+  async sms_check(params = {}) {
+    return await this.axios("POST", "User/sms_check", params);
   }
   
 }

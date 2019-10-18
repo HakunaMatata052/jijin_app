@@ -1,9 +1,10 @@
 <template>
   <div class="container">
-    <navBar :title="data.title" />
+    <navBar :title="data.title" stl="nobg"/>
     <div class="main">
       <div class="aboutus">{{data.content}}</div>
     </div>
+    
   </div>
 </template>
 
@@ -22,7 +23,7 @@ export default {
   created() {
     this.$SERVER
       .Publiccon({
-        type: this.$route.params.type
+        id: this.$route.params.id
       })
       .then(res => {
         this.data = res.data[0];

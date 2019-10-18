@@ -6,13 +6,13 @@
         <form class="nameAndidcard">
           <van-cell-group>
             <van-field
-              v-model="$store.state.userInfo.user_account"
+              v-model="form.user_account"
               center
               clearable
               type="number"
               pattern="[0-9]*"
-              label="旧手机号"
-              readonly
+              label="新手机码"
+              placeholder="请输入新手机号"
             >
               <van-button
                 slot="button"
@@ -35,7 +35,7 @@
             <van-cell value="手机无法接收验证码" to="/accountappeal" value-class="right-text" />
           </van-cell-group>
         </form>
-        <van-button type="info" class="btn" :loading="loading" @click="submit">下一步</van-button>
+        <van-button type="info" class="btn" :loading="loading" @click="submit">提交</van-button>
       </div>
     </div>
   </div>
@@ -45,13 +45,14 @@
 import regexUtil from "regex-util";
 import navBar from "@/components/navbar/navbar.vue";
 export default {
-  name: "securityaccount",
+  name: "securityaccount2",
   components: {
     navBar
   },
   data() {
     return {
       form: {
+        user_account: "",
         captcha: ""
       },
       loading: false,
@@ -66,7 +67,11 @@ export default {
   },
   methods: {
     sendchecknum() {
-      if (regexUtil.isPhone(this.$store.state.userInfo.user_account)) {
+      if (this.form.user_account == this.$store.state.userInfo.user_account) {
+        this.$toast.fail("该手机号与当前绑定的手机号相同");
+        return
+      }
+      if (regexUtil.isPhone(this.form.user_account)) {
         const timer_COUNT = 60;
         if (!this.timer) {
           this.countDown = timer_COUNT;
@@ -83,7 +88,7 @@ export default {
         }
         this.$SERVER
           .sendchecknum({
-            mobile: this.$store.state.userInfo.user_account
+            mobile: this.form.user_account
           })
           .then(res => {
             this.$toast.success("验证码发送成功！");
@@ -99,23 +104,29 @@ export default {
       }
     },
     submit() {
-      if (!regexUtil.isPhone(this.$store.state.userInfo.user_account)) {
+      if (!regexUtil.isPhone(this.form.user_account)) {
         this.$toast.fail("请输入正确的手机号码");
         return;
+      }
+      if (this.form.user_account == this.$store.state.userInfo.user_account) {
+        this.$toast.fail("该手机号与当前绑定的手机号相同");
       }
       if (!this.form.captcha || this.form.captcha.length == 0) {
         this.$toast.fail("请输入验证码");
         return;
       }
       this.$SERVER
-        .sms_check({
+        .faceup({
           captcha: this.form.captcha,
-          mobile: this.$store.state.userInfo.user_account
+          user_account: this.form.user_account
         })
         .then(res => {
-          this.$router.push('/securityaccount2')
-        }).catch(err=>{          
-          this.$toast.fail("验证码不正确！");
+          this.$METHOD.updateLocalUserInfo(
+            "user_account",
+            this.form.user_account
+          );
+          this.$toast.success("修改成功！");
+          this.$router.push('/mine');
         });
     }
   }

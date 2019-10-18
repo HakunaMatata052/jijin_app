@@ -1,7 +1,8 @@
 <template>
   <div class="searchNav" :style="'padding-top:'+ top +'px'">
     <div class="minePicture" @click="$router.push('/mine')">
-      <img :src="$store.state.userInfo.user_img || user_img" />
+      <img :src="$store.state.userInfo.user_img || user_img" v-if="$METHOD.getStore('token')"/>
+      <img :src="user_img2" v-else/>
     </div>
     <van-search
       placeholder="基金名称 / 代码"
@@ -17,6 +18,7 @@
 </template>
 <script>
 import user_img from "@/assets/images/default.png";
+import user_img2 from "@/assets/images/3a7a761104c3aa5bf21ef1a3a286de5.png";
 export default {
   name: "searchBar",
   components: {},
@@ -24,7 +26,8 @@ export default {
     return {
       value: "",
       top: 0,
-      user_img: user_img
+      user_img: user_img,
+      user_img2:user_img2
     };
   },
   mounted() {
@@ -66,6 +69,7 @@ export default {
     padding-left: 17px;
     width: 33px;
     height: 33px;
+    line-height: 33px;
     img {
       width: 100%;
       height: 100%;

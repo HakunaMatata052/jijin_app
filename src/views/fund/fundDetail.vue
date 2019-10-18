@@ -2,21 +2,35 @@
   <div class="container">
     <navBar :stl="bg" class="navbar" :title="data.fund_name" />
     <div class="main">
-      <h1 ref="top">
+      <h1 ref="top" :style="`background-image:url(${data.bg_img || fund_bg})`">
         <div :style="'height:'+(35+top)+'px'"></div>
         {{$route.params.id}}
       </h1>
       <van-row class="title">
-        <van-icon class-prefix="icon" name="shuju" class="shenIcon" />{{data.explain}}
+        <van-icon class-prefix="icon" name="shuju" class="shenIcon" />
+        {{data.explain}}
       </van-row>
       <div class="titleList2">
         <van-row class="titleListLine">
           <van-col span="12">近三月收益</van-col>
-          <van-col span="12">单位净值（{{data.time}}）</van-col>
+          <van-col
+            span="12"
+            @click="$router.push('/historyvalue/'+$route.params.id+'/'+data.type2_id_desc)"
+          >单位净值（{{data.time}}）</van-col>
         </van-row>
         <van-row class="titleListLine">
-          <van-col span="12" class="titleListLineper">{{data.quarter_incratio}}</van-col>
-          <van-col span="12" class="titleListLineNum">{{data.netvalue}}</van-col>
+          <van-col
+            span="12"
+            :class="data.quarter_incratio>0?'titleListLineper':'titleListLineper2'"
+          >
+            <span v-if="data.quarter_incratio>0">+</span>
+            {{data.quarter_incratio}}%
+          </van-col>
+          <van-col
+            span="12"
+            class="titleListLineNum"
+            @click="$router.push('/historyvalue/'+$route.params.id+'/'+data.type2_id_desc)"
+          >{{data.netvalue}}</van-col>
         </van-row>
         <div class="button">
           <p :class="data.boom?'gao':''">{{data.fund_risk_level}}</p>
@@ -34,6 +48,17 @@
         >
           <van-tab :title="data.type2_id_desc!='货币型'?'收益率走势':'万份收益走势'" :name="1">
             <canvas id="myChart"></canvas>
+            <van-tabs
+              v-model="type"
+              @change="drawLine"
+              :color="$store.state.color"
+              :title-active-color="$store.state.color"
+            >
+              <van-tab title="近1个月" name="1"></van-tab>
+              <van-tab title="近3个月" name="2"></van-tab>
+              <van-tab title="近1年" name="3"></van-tab>
+              <van-tab title="至成立" name="0"></van-tab>
+            </van-tabs>
           </van-tab>
           <van-tab :title="data.type2_id_desc!='货币型'?'历史净值':'万份收益'" :name="2">
             <table class="table">
@@ -47,11 +72,16 @@
               </tr>
               <tr v-for="(item,index) in list" :key="index" v-if="index<=4">
                 <td>{{item.fbrq}}</td>
-                <td>{{item.jjjz}}</td>
+                <td v-if="data.type2_id_desc!='货币型'">{{item.jjjz}}</td>
+                <td v-else>{{item.networth}}%</td>
                 <td v-if="data.type2_id_desc!='货币型'">{{item.ljjz}}</td>
-                <td>
-                  <span :class="item.rise==0?'die':'zhang'">{{item.networth}}%</span>
+                <td v-if="data.type2_id_desc!='货币型'">
+                  <div :class="item.rise==0?'die':'zhang'">
+                    <span v-if="item.rise>0">+</span>
+                    {{item.networth}}%
+                  </div>
                 </td>
+                <td v-else>{{item.jjjz}}</td>
               </tr>
             </table>
             <div
@@ -61,35 +91,35 @@
           </van-tab>
         </van-tabs>
 
-        <van-grid :column-num="3">
+        <van-grid :column-num="2">
           <van-grid-item>
-            <template slot="text">
-              <p>累计净值</p>
-              <p>{{data.ljjz}}</p>
-            </template>
+            <p>累计净值</p>
+          </van-grid-item>
+          <van-grid-item>
+            <p>{{data.ljjz}}</p>
           </van-grid-item>
         </van-grid>
       </div>
       <van-cell-group class="titleList">
-        <van-cell title="基金档案" is-link value="基础信息 / 资产配置" />
+        <van-cell title="基金档案" is-link value="查看详情" :to="`/fundArchives/${$route.params.id}`" />
         <div class="inforn">
           <div class="infornLeft">
-            <img class="headerImg" src="../../assets/images/indexchart.png" />
+            <img class="headerImg" :src="data.stcok_img_jingli.ac_img" />
           </div>
           <div class="infornRight">
             <div class="infornRightTop">
-              <p class="infornRightTopText1">Soocool</p>
+              <p class="infornRightTopText1">{{data.stcok_img_jingli.ac_name}}</p>
               <p class="infornRightTopText2">管理后涨幅</p>
             </div>
             <div class="infornRightBottom">
-              <p class="infornRightBottomText1">2015年10月任职</p>
-              <p class="infornRightBottomText2">48.30%</p>
+              <p class="infornRightBottomText1">{{data.stcok_img_jingli.rz_time}}任职</p>
+              <p class="infornRightBottomText2">{{data.stcok_img_jingli.rate}}%</p>
             </div>
           </div>
         </div>
       </van-cell-group>
       <van-cell-group>
-        <van-cell title="交易须知" is-link value="详情" @click="$router.push('/tradingknow')" />
+        <van-cell title="交易须知" is-link />
         <div class="tradingKnow">
           <div class="tradingKnowLeft">份额确认</div>
           <div class="tradingKnowRight">
@@ -102,7 +132,7 @@
           </div>
         </div>
         <div class="tradingKnow" style="padding-top:2px;">
-          <div class="tradingKnowLeft">份额确认</div>
+          <div class="tradingKnowLeft">份额赎回</div>
           <div class="tradingKnowRight">可部分赎回，最低赎回份额不低于0.00份</div>
         </div>
       </van-cell-group>
@@ -142,8 +172,8 @@
 
 <script>
 import navBar from "@/components/navbar/navbar.vue";
+import fund_bg from "@/assets/images/fund-bg.png";
 import F2 from "@antv/f2/lib/index";
-import "@antv/f2/lib/interaction";
 export default {
   name: "fundDetail",
   components: {
@@ -151,6 +181,7 @@ export default {
   },
   data() {
     return {
+      fund_bg: fund_bg,
       chartNav: [
         {
           title: "夏普",
@@ -166,19 +197,12 @@ export default {
         }
       ],
       top: 0,
-      data: {},
+      data: {
+        stcok_img_jingli: {}
+      },
       bg: "nobg",
       list: [],
-      chartData: [
-        {
-          year: 2000,
-          age: 27.2
-        },
-        {
-          year: 2001,
-          age: 27.5
-        }
-      ]
+      type: 1
     };
   },
   created() {
@@ -191,6 +215,7 @@ export default {
         this.data.ljjz = res.data.cache.ljjz;
       });
     this.getJingzhi();
+    this.drawLine();
   },
   mounted() {
     window.addEventListener("scroll", this.handleScroll, true);
@@ -215,7 +240,6 @@ export default {
         })
         .then(res => {
           this.list = res.data;
-          this.drawLine();
         });
     },
     handleScroll(e) {
@@ -226,43 +250,62 @@ export default {
       }
     },
     drawLine() {
-      const chart = new F2.Chart({
-        id: "myChart",
-        pixelRatio: window.devicePixelRatio // 指定分辨率
-      });
-      // Step 2: 载入数据源
-      chart.source(this.list, {
-        fbrq: {
-          type: "timeCat",
-          tickCount: 3,
-          range: [0, 1]
-        },
-        jjjz: {
-          tickCount: 10
-        }
-      });
-      chart.legend(false); // 不使用默认图例
-
-      // Step 3：创建图形语法，绘制柱状图，由 genre 和 sold 两个属性决定图形位置，genre 映射至 x 轴，sold 映射至 y 轴
-      chart
-        .line()
-        .position("fbrq*networth")
-        .shape("smooth")
-        .color("l(0) 0:#F2C587 0.5:#ED7973 1:#8659AF");
-      chart.interaction("pan");
-      chart.interaction("pinch");
-
-      chart.axis("networth", {
-        label: (text, index, total) => {
-          const cfg = {
-            textAlign: "right"
-          };
-          cfg.text = text + "%"; // cfg.text 支持文本格式化处理
-          return cfg;
-        }
-      });
-      // Step 4: 渲染图表
-      chart.render();
+      this.$SERVER
+        .stock_jingzhi_k({
+          fund_code: this.$route.params.id,
+          type: this.type
+        })
+        .then(res => {
+          const chart = new F2.Chart({
+            id: "myChart",
+            pixelRatio: window.devicePixelRatio // 指定分辨率
+          });
+          // Step 2: 载入数据源
+          chart.source(res.data, {
+            fbrq: {
+              type: "timeCat",
+              tickCount: 3,
+              range: [0, 1],
+              alias: "时间"
+            },
+            networth: {
+              // tickCount: 10
+              alias: "收益率"
+            }
+          });
+          chart.tooltip({
+            custom: true,
+            showXTip: true,
+            showYTip: true,
+            snap: true,
+            crosshairsType: "xy",
+            crosshairsStyle: {
+              lineDash: [2]
+            },
+            onShow(ev) {
+              var items = ev.items;
+              items[0].name = null;
+              items[0].value = items[0].value+"%";
+            }
+          });
+          // Step 3：创建图形语法，绘制柱状图，由 genre 和 sold 两个属性决定图形位置，genre 映射至 x 轴，sold 映射至 y 轴
+          chart
+            .line()
+            .position("fbrq*networth")
+            // .shape("smooth")
+            .color("#5196ff");
+          chart.axis("networth", {
+            label: (text, index, total) => {
+              const cfg = {
+                textAlign: "right"
+              };
+              cfg.text = text + "%"; // cfg.text 支持文本格式化处理
+              return cfg;
+            }
+          });
+          // Step 4: 渲染图表
+          chart.render();
+        });
     },
     likeFn(type) {
       this.data.like = !this.data.like;
@@ -271,9 +314,8 @@ export default {
           type: Number(!type),
           pro_code: this.$route.params.id
         })
-        .then(res=>{
-
-          console.log(1)
+        .then(res => {
+          console.log(1);
         })
         .catch(err => {
           this.data.like = !this.data.like;
@@ -286,7 +328,8 @@ export default {
 <style lang="less" scoped>
 .main {
   h1 {
-    background: url(../../assets/images/fund-bg.png) no-repeat center top;
+    background-position: center top;
+    background-repeat: no-repeat;
     background-size: 100% auto;
     font-size: 15px;
     font-weight: 400;
@@ -354,6 +397,12 @@ export default {
         font-family: PingFang-SC-Bold;
         font-weight: bold;
         color: rgba(255, 89, 65, 1);
+      }
+      .titleListLineper2 {
+        font-size: 21px;
+        font-family: PingFang-SC-Bold;
+        font-weight: bold;
+        color: rgb(81, 150, 255);
       }
       .titleListLineNum {
         font-size: 15px;
@@ -456,6 +505,7 @@ export default {
 .inforn {
   display: flex;
   padding: 13px 0;
+  align-items: center;
   .infornLeft {
     width: 44px;
     height: 44px;

@@ -11,8 +11,10 @@
               clearable
               placeholder="请输入6-11位登录密码"
               class="field"
-              type="password"
+              :type="pwdShow?'text':'password'"
               :border="false"
+              :right-icon="pwdShow?'eye-o':'closed-eye'"
+              @click-right-icon="pwdShow = !pwdShow"
             ></van-field>
           </div>
           <div class="cell-group">
@@ -22,8 +24,10 @@
               clearable
               placeholder="请输入6-11位登录密码"
               class="field"
-              type="password"
+              :type="pwdShow?'text':'password'"
               :border="false"
+              :right-icon="pwdShow?'eye-o':'closed-eye'"
+              @click-right-icon="pwdShow = !pwdShow"
             ></van-field>
           </div>
         </van-cell-group>
@@ -51,7 +55,8 @@ export default {
   data() {
     return {
       regLoading: false,
-      newpassword: ""
+      newpassword: "",
+      pwdShow: false
     };
   },
   created() {
@@ -62,7 +67,7 @@ export default {
   methods: {
     regFn() {
       var that = this;
-       if (!regexUtil.isPassword(this.$store.state.register.newpassword)) {
+      if (!regexUtil.isPassword(this.$store.state.register.newpassword)) {
         this.$toast.fail("请输入6-11位字母数字组合密码");
         return;
       }
@@ -72,18 +77,31 @@ export default {
       }
 
       this.regLoading = true;
-      this.$SERVER.register(this.$store.state.register).then(res => {
-        that.regLoading = false;
-        that.$METHOD.setStore("token", res.data.userinfo.token);
-        that.$METHOD.setStore("userInfo", res.data.userinfo_first);
-        that.$store.state.token = res.data.userinfo.token;
-        that.$store.state.userInfo = res.data.userinfo_first;
-        that.$toast.success(res.msg)
-        that.$router.push("/");
-      }).catch(err=>{
-        that.regLoading = false;
-        that.$toast.fail(res.msg);
-      });
+      this.$SERVER
+        .register(this.$store.state.register)
+        .then(res => {
+          that.regLoading = false;
+          that.$METHOD.setStore("token", res.data.userinfo.token);
+          that.$store.state.token = res.data.userinfo.token;
+          that.$store.state.userInfo = res.data.userinfo_first;
+          that.$toast.success(res.msg);
+          that.$router.push("/");
+          that.$dialog
+            .confirm({
+              title: "提示",
+              message: "是否去实名认证"
+            })
+            .then(() => {
+              that.$router.push('/registration')
+            })
+            .catch(() => {
+              // on cancel
+            });
+        })
+        .catch(err => {
+          that.regLoading = false;
+          that.$toast.fail(err.msg);
+        });
     }
   }
 };

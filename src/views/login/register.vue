@@ -40,7 +40,7 @@
             </van-field>
           </div>
           <div class="cell-group">
-            <p class="recommendedPhone">推荐手机号</p>
+            <p class="recommendedPhone">邀请码</p>
             <van-field
               v-model="$store.state.register.retail_code"
               placeholder="选填"
@@ -64,7 +64,7 @@
         </div>
         <p>
           注册即同意
-          <span @click="$router.push('/aboutus/3')">《用户协议》</span>
+          <span @click="$router.push('/aboutus/92')">《用户协议》</span>
         </p>
       </div>
     </div>
@@ -90,6 +90,9 @@ export default {
   created() {
     if (this.$METHOD.getStore("token")) {
       this.$router.push("/");
+    }
+    if (this.$route.params.val) {
+      this.$store.state.register.retail_code = this.$route.params.val;
     }
   },
   methods: {
@@ -117,7 +120,7 @@ export default {
             this.$toast.success("验证码发送成功！");
           })
           .catch(res => {
-            this.form.captcha = "";
+            this.$store.state.register.captcha = "";
             this.checkNumDisabled = false;
             clearInterval(this.timer);
             this.timer = null;
@@ -158,6 +161,16 @@ export default {
   }
   .main {
     width: 90%;
+    & > p {
+      text-align: center;
+      margin-top: 10px;
+      color: #999;
+      font-size: 14px;
+      span {
+        text-decoration: underline;
+        color: rgba(81, 150, 255, 1);
+      }
+    }
     .cell-group {
       .cell-group {
         display: flex;
@@ -207,16 +220,6 @@ export default {
     text-align: center;
     margin-top: 50px;
     color: #999;
-    span {
-      text-decoration: underline;
-      color: rgba(81, 150, 255, 1);
-    }
-  }
-  p {
-    text-align: center;
-    margin-top: 10px;
-    color: #999;
-    font-size: 14px;
     span {
       text-decoration: underline;
       color: rgba(81, 150, 255, 1);

@@ -35,8 +35,10 @@
               </van-button>
             </van-field>
           </van-cell-group>
-          <van-field v-model="form.password" type="password" placeholder="请输入密码" class="field"></van-field>
-          <van-field v-model="form.password2" type="password" placeholder="请再次输入密码" class="field"></van-field>
+          <van-field v-model="form.password" type="password" placeholder="请输入新密码" class="field"></van-field>
+          <van-field v-model="form.password2" type="password" placeholder="请再次输入新密码" class="field"></van-field>
+          <van-cell to="/accountappeal" value-class="right-text">
+        手机无法接收验证码</van-cell>
         </van-cell-group>
         <van-button
           type="primary"
@@ -47,8 +49,7 @@
           class="regbtn"
           :hairline="false"
         >确认修改</van-button>
-        <p></p>
-        <div class="gologin" v-if="$METHOD.getStore('token')">
+        <div class="gologin" v-if="!$METHOD.getStore('token')">
           已有账号？
           <span @click="$router.push('/login')">立即登录</span>
         </div>
@@ -132,10 +133,6 @@ export default {
         this.$toast.fail("请输入6-11位字母数字组合密码");
         return;
       }
-      if (!this.checked) {
-        this.$toast.fail("请阅读并同意《用户注册协议》");
-        return;
-      }
       if (this.form.password !== this.form.password2) {
         this.$toast.fail("两次密码不一致");
         return;
@@ -150,7 +147,7 @@ export default {
         .then(res => {
           this.$toast.success(res.msg);
           this.regLoading = false;
-          this.$router.push("/login");
+          this.$router.go(-1);
         })
         .catch(res => {
           this.regLoading = false;
@@ -191,10 +188,10 @@ export default {
     color: #fff;
     border: 0;
   }
-  p {
-    margin-top: 30px;
-    color: #fff;
+  .right-text {
     font-size: 14px;
+    text-align: right;
+    color: #999;
     span {
       color: #5196FF;
       margin-left: 5px;

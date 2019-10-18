@@ -10,7 +10,7 @@
           </div>
           <div class="rtansactionrecordsbTBtn">
             <div>充值</div>
-            <div>提现</div>
+            <div @click="$router.push('/topup')">提现</div>
           </div>
         </div>
         <van-list
@@ -21,19 +21,21 @@
         >
           <div class="rtansactionrecordsM">
             <van-row class="rtansactionrecordsList th">
-              <van-col span="6" class="rtansactionrecords">日期</van-col>
+              <van-col span="5" class="rtansactionrecords">日期</van-col>
               <van-col span="5" class="rtansactionrecords">时间</van-col>
               <van-col span="5" class="rtansactionrecords">金额</van-col>
-              <van-col span="7" class="rtansactionrecords">操作</van-col>
+              <van-col span="5" class="rtansactionrecords">操作</van-col>
+              <van-col span="4" class="rtansactionrecords">状态</van-col>
             </van-row>
             <van-row class="rtansactionrecordsList" v-for="(item,index) in list" :key="index">
-              <van-col span="6" class="rtansactionrecords">{{item.mon}}</van-col>
+              <van-col span="5" class="rtansactionrecords">{{item.mon}}</van-col>
               <van-col span="5" class="rtansactionrecords">{{item.time}}</van-col>
               <van-col
                 span="5"
                 :class="item.rise==0?'rtansactionrecords downcolorper':'rtansactionrecords upcolorper'"
-              >{{item.fee}}</van-col>
-              <van-col span="7" class="rtansactionrecords">{{item.cost_type}}</van-col>
+              >{{item.money}}</van-col>
+              <van-col span="5" class="rtansactionrecords">{{item.cost_type}}</van-col>
+              <van-col span="4" class="rtansactionrecords">{{item.status}}</van-col>
             </van-row>
           </div>
         </van-list>

@@ -396,8 +396,8 @@ export const IdCodeValid = function (code) {
 
 
 export const updateLocalUserInfo = (name,val) => {
-  var obj = JSON.parse(getStore('userInfo'))
-  obj[name] = val
-  setStore('userInfo',obj)
+  // var obj = JSON.parse(getStore('userInfo'))
+  // obj[name] = val
+  // setStore('userInfo',obj)
   $store.state.userInfo[name] = val
 };

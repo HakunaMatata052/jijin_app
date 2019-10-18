@@ -28,12 +28,12 @@ const router = new Router({
           name: "home",
           component: () => import("@/views/index/subviews/home.vue"),
           meta: {
-            keepAlive: true,
+            keepAlive: false,
             isTransition: true,
-            title:"首页",
+            title: "首页",
             isMember: false,
-            isLogin:false,
-            index:0
+            isLogin: false,
+            index: 0
           }
         },
         {
@@ -43,10 +43,10 @@ const router = new Router({
           meta: {
             keepAlive: false,
             isTransition: true,
-            title:"基金",
+            title: "基金",
             isMember: false,
-            isLogin:false,
-            index:1
+            isLogin: false,
+            index: 1
           }
         },
         {
@@ -56,10 +56,10 @@ const router = new Router({
           meta: {
             keepAlive: false,
             isTransition: true,
-            title:"收益",
+            title: "收益",
             isMember: false,
-            isLogin:true,
-            index:2
+            isLogin: true,
+            index: 2
           }
         },
         {
@@ -69,10 +69,10 @@ const router = new Router({
           meta: {
             keepAlive: true,
             isTransition: true,
-            title:"我的",
+            title: "我的",
             isMember: false,
-            isLogin:true,
-            index:3
+            isLogin: true,
+            index: 3
           },
         }
       ]
@@ -96,9 +96,9 @@ const router = new Router({
       meta: {
         keepAlive: false,
         isTransition: true,
-        title:"我的收藏",
+        title: "我的收藏",
         isMember: false,
-        isLogin:true
+        isLogin: true
       }
     },
     {
@@ -108,9 +108,9 @@ const router = new Router({
       meta: {
         keepAlive: false,
         isTransition: true,
-        title:"邀请有礼",
+        title: "邀请有礼",
         isMember: false,
-        isLogin:false
+        isLogin: false
       }
     },
     // {
@@ -132,9 +132,9 @@ const router = new Router({
       meta: {
         keepAlive: false,
         isTransition: true,
-        title:"市场研报",
+        title: "市场研报",
         isMember: false,
-        isLogin:false
+        isLogin: false
       }
     },
     // {
@@ -156,9 +156,9 @@ const router = new Router({
       meta: {
         keepAlive: false,
         isTransition: true,
-        title:"主题选基",
+        title: "主题选基",
         isMember: false,
-        isLogin:false
+        isLogin: false
       }
     },
     {
@@ -168,9 +168,9 @@ const router = new Router({
       meta: {
         keepAlive: false,
         isTransition: true,
-        title:"现金宝",
+        title: "现金宝",
         isMember: false,
-        isLogin:false
+        isLogin: false
       }
     },
     //基金详情
@@ -181,22 +181,34 @@ const router = new Router({
       meta: {
         keepAlive: false,
         isTransition: true,
-        title:"基金详情",
+        title: "基金详情",
         isMember: false,
-        isLogin:false
+        isLogin: false
       }
     },
-     //购买基金详情
-     {
+    {
+      path: "/fundArchives/:id",
+      name: "fundArchives",
+      component: () => import("@/views/fund/fundArchives.vue"),
+      meta: {
+        keepAlive: false,
+        isTransition: true,
+        title: "基金档案",
+        isMember: false,
+        isLogin: false
+      }
+    },
+    //购买基金详情
+    {
       path: "/buyfund/:id",
       name: "buyfund",
       component: () => import("@/views/fund/buyfund.vue"),
       meta: {
         keepAlive: false,
         isTransition: true,
-        title:"购买基金详情",
+        title: "购买基金详情",
         isMember: true,
-        isLogin:true
+        isLogin: true
       }
     },
     //研报内容详情
@@ -207,9 +219,9 @@ const router = new Router({
       meta: {
         keepAlive: false,
         isTransition: true,
-        title:"市场正文",
+        title: "市场正文",
         isMember: false,
-        isLogin:false
+        isLogin: false
       }
     },
     //购买须知
@@ -220,9 +232,9 @@ const router = new Router({
       meta: {
         keepAlive: false,
         isTransition: true,
-        title:"买入须知",
+        title: "买入须知",
         isMember: false,
-        isLogin:false
+        isLogin: false
       }
     },
     //赎回
@@ -233,9 +245,9 @@ const router = new Router({
       meta: {
         keepAlive: false,
         isTransition: true,
-        title:"赎回",
+        title: "赎回",
         isMember: true,
-        isLogin:true
+        isLogin: true
       }
     },
     //交易费率
@@ -246,37 +258,37 @@ const router = new Router({
       meta: {
         keepAlive: false,
         isTransition: true,
-        title:"交易费率",
+        title: "交易费率",
         isMember: false,
-        isLogin:false
+        isLogin: false
       }
     },
-     //交易记录
-     {
+    //交易记录
+    {
       path: "/transactionrecords",
       name: "transactionrecords",
       component: () => import("@/views/earnings/transactionrecords.vue"),
       meta: {
         keepAlive: false,
         isTransition: true,
-        title:"交易记录",
+        title: "交易记录",
         isMember: false,
-        isLogin:true
+        isLogin: true
       }
     },
-     //交易详情
-     {
+    //交易详情
+    {
       path: "/transactionDetail/:id",
       name: "transactionDetail",
       component: () => import("@/views/earnings/transactionDetail.vue"),
       meta: {
         keepAlive: false,
         isTransition: true,
-        title:"交易详情",
+        title: "交易详情",
         isMember: false,
-        isLogin:true
+        isLogin: true
       }
-    },    
+    },
     //购买基金交易记录
     {
       path: "/goldfund",
@@ -285,9 +297,9 @@ const router = new Router({
       meta: {
         keepAlive: false,
         isTransition: true,
-        title:"黄金基金",
+        title: "黄金基金",
         isMember: false,
-        isLogin:false
+        isLogin: false
       }
     },
     //购买成功
@@ -298,9 +310,9 @@ const router = new Router({
       meta: {
         keepAlive: false,
         isTransition: true,
-        title:"支付成功",
+        title: "支付成功",
         isMember: false,
-        isLogin:true
+        isLogin: true
       }
     },
     //赎回成功
@@ -311,9 +323,9 @@ const router = new Router({
       meta: {
         keepAlive: false,
         isTransition: true,
-        title:"赎回成功",
+        title: "赎回成功",
         isMember: false,
-        isLogin:true
+        isLogin: true
       }
     },
     //充值、提现
@@ -324,9 +336,9 @@ const router = new Router({
       meta: {
         keepAlive: false,
         isTransition: true,
-        title:"",
+        title: "",
         isMember: true,
-        isLogin:true
+        isLogin: true
       }
     },
     //余额明细
@@ -337,9 +349,9 @@ const router = new Router({
       meta: {
         keepAlive: false,
         isTransition: true,
-        title:"余额明细",
+        title: "余额明细",
         isMember: false,
-        isLogin:true
+        isLogin: true
       }
     },
     //邀请用户
@@ -350,9 +362,9 @@ const router = new Router({
       meta: {
         keepAlive: false,
         isTransition: true,
-        title:"邀请用户",
+        title: "邀请用户",
         isMember: false,
-        isLogin:true
+        isLogin: true
       }
     },
     //设置交易密码
@@ -363,9 +375,9 @@ const router = new Router({
       meta: {
         keepAlive: false,
         isTransition: true,
-        title:"设置交易密码",
+        title: "设置交易密码",
         isMember: true,
-        isLogin:true
+        isLogin: true
       }
     },
     //购买
@@ -376,22 +388,22 @@ const router = new Router({
       meta: {
         keepAlive: false,
         isTransition: true,
-        title:"购买",
+        title: "购买",
         isMember: true,
-        isLogin:true
+        isLogin: true
       }
     },
-     //历史净值
-     {
+    //历史净值
+    {
       path: "/historyvalue/:id/:type?",
       name: "historyvalue",
       component: () => import("@/views/earnings/historyvalue.vue"),
       meta: {
         keepAlive: false,
         isTransition: true,
-        title:"历史净值",
+        title: "历史净值",
         isMember: false,
-        isLogin:false
+        isLogin: false
       }
     },
     //日收益
@@ -402,9 +414,9 @@ const router = new Router({
       meta: {
         keepAlive: false,
         isTransition: true,
-        title:"日收益",
+        title: "日收益",
         isMember: false,
-        isLogin:true
+        isLogin: true
       }
     },
     //收益分析
@@ -415,12 +427,12 @@ const router = new Router({
       meta: {
         keepAlive: false,
         isTransition: true,
-        title:"收益分析",
+        title: "收益分析",
         isMember: false,
-        isLogin:true
+        isLogin: true
       }
     },
-    
+
     //人工账号申诉
     {
       path: "/accountappeal",
@@ -429,9 +441,9 @@ const router = new Router({
       meta: {
         keepAlive: false,
         isTransition: true,
-        title:"人工账号申诉",
-        isMember: true,
-        isLogin:true
+        title: "人工账号申诉",
+        isMember: false,
+        isLogin: false
       }
     },
     {
@@ -441,9 +453,9 @@ const router = new Router({
       meta: {
         keepAlive: false,
         isTransition: true,
-        title:"设置支付密码",
-        isMember: true,
-        isLogin:true
+        title: "设置支付密码",
+        isMember: false,
+        isLogin: true
       }
     },
     //搜索
@@ -454,9 +466,9 @@ const router = new Router({
       meta: {
         keepAlive: true,
         isTransition: false,
-        title:"搜索",
+        title: "搜索",
         isMember: false,
-        isLogin:false
+        isLogin: false
       }
     },
     //实名认证
@@ -467,35 +479,49 @@ const router = new Router({
       meta: {
         keepAlive: false,
         isTransition: true,
-        title:"实名认证",
+        title: "实名认证",
         isMember: false,
-        isLogin:true
+        isLogin: true
       }
     },
-     //修改绑定手机
-     {
+    //修改绑定手机
+    {
       path: "/securityaccount",
       name: "securityaccount",
       component: () => import("@/views/mine/securityaccount.vue"),
       meta: {
         keepAlive: false,
         isTransition: true,
-        title:"修改绑定手机",
-        isMember: true,
-        isLogin:true
+        title: "修改绑定手机",
+        isMember: false,
+        isLogin: true
+      }
+    },
+    
+    //修改绑定手机
+    {
+      path: "/securityaccount2",
+      name: "securityaccount2",
+      component: () => import("@/views/mine/securityaccount2.vue"),
+      meta: {
+        keepAlive: false,
+        isTransition: true,
+        title: "绑定新手机",
+        isMember: false,
+        isLogin: true
       }
     },
     // 关于我们
     {
-      path: "/aboutus/:type",
-      name:"aboutus",
+      path: "/aboutus/:id",
+      name: "aboutus",
       component: () => import("@/views/mine/aboutus.vue"),
       meta: {
         keepAlive: false,
         isTransition: true,
-        title:"关于我们",
+        title: "关于我们",
         isMember: false,
-        isLogin:false
+        isLogin: false
       }
     },
     //重置登录密码
@@ -506,9 +532,9 @@ const router = new Router({
       meta: {
         keepAlive: true,
         isTransition: true,
-        title:"重置登录密码",
+        title: "重置登录密码",
         isMember: false,
-        isLogin:true
+        isLogin: true
       }
     },
     {
@@ -518,115 +544,122 @@ const router = new Router({
       meta: {
         keepAlive: true,
         isTransition: true,
-        title:"重置登录密码",
+        title: "重置登录密码",
         isMember: false,
-        isLogin:true
+        isLogin: true
       }
     },
     // 注册登录
     {
       path: "/login/:name?",
-      name:"login",
+      name: "login",
       component: () => import("@/views/login/login.vue"),
       meta: {
         keepAlive: false,
         isTransition: true,
-        title:"登录",
+        title: "登录",
         isMember: false,
-        isLogin:false
+        isLogin: false
       }
     },
     {
-      path: "/register",
-      name:"register",
+      path: "/register/:val?",
+      name: "register",
       component: () => import("@/views/login/register.vue"),
       meta: {
         keepAlive: false,
         isTransition: true,
-        title:"手机注册",
+        title: "手机注册",
         isMember: false,
-        isLogin:false
+        isLogin: false
       }
     },
     {
       path: "/registerPassword",
-      name:"registerPassword",
+      name: "registerPassword",
       component: () => import("@/views/login/registerPassword.vue"),
       meta: {
         keepAlive: false,
         isTransition: true,
-        title:"手机注册",
+        title: "手机注册",
         isMember: false,
-        isLogin:false
+        isLogin: false
       }
     },
     {
       path: "/resetPassword",
-      name:"resetPassword",
+      name: "resetPassword",
       component: () => import("@/views/login/resetPassword.vue"),
       meta: {
         keepAlive: false,
         isTransition: true,
-        title:"修改密码",
+        title: "修改密码",
         isMember: false,
-        isLogin:false
+        isLogin: false
       }
     },
     {
       path: "/chat/:id",
-      name:"chat",
+      name: "chat",
       component: () => import("@/views/message/chat.vue"),
       meta: {
         keepAlive: false,
         isTransition: true,
-        title:"客服",
+        title: "客服",
         isMember: false,
-        isLogin:true
+        isLogin: true
       }
     },
     {
       path: "/bankup",
-      name:"bankup",
+      name: "bankup",
       component: () => import("@/views/mine/bankup.vue"),
       meta: {
         keepAlive: false,
         isTransition: true,
-        title:"绑定银行卡",
-        isMember: true,
-        isLogin:true
+        title: "绑定银行卡",
+        isMember: false,
+        isLogin: true
       }
     },
   ]
 });
 router.beforeEach((to, from, next) => {
-  if(to.meta.index){
+  if (to.name != "register" && to.name != "registerPassword") {
+    if (!window.navigator.userAgent.match(/APICloud/i)) {
+      if (process.env.NODE_ENV === "production") {
+        window.location.href = "https://fir.im/ctjj"
+      }
+    }
+  }
+  if (to.meta.index!=undefined) {
     $store.state.tabActiveIndex = to.meta.index
   }
   if (to.meta.isLogin) {
     if (!window.localStorage.getItem('token')) {
-      if(from.name=="login"){
+      if (from.name == "login") {
         router.push('/')
-      }else{
-        router.push('/login/'+from.name)
-      }      
-    }else{
+      } else {
+        router.push('/login/' + from.name)
+      }
+    } else {
       next()
     }
-  }else {
+  } else {
     next()
   }
   if (to.meta.isMember) {
-    if (!JSON.parse(window.localStorage.getItem('userInfo')).auth) {
+    if (!$store.state.userInfo.auth) {
       Toast.fail('请先实名认证后操作！')
       router.push('/registration')
-    }else{
+    } else {
       next()
     }
   }
 })
 
 router.afterEach(route => {
-    
+
   // console.log(route)
   // console.log("跳转")
 })

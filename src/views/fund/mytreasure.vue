@@ -30,13 +30,19 @@
         <h1>收益数据仅供参考，不构成投资建议。市场有风险，投资需谨慎</h1>
       </div>
     </div>
+    <div class="bottom-btn">
+      <div
+        class="btn buy"
+        @click="$router.push('/buy/999999')"
+        :style="'height:'+ (50+bottom)+'px;'"
+      >立即充值</div>
+    </div>
   </div>
 </template>
 
 <script>
 import navBar from "@/components/navbar/navbar.vue";
 import F2 from "@antv/f2/lib/index";
-import "@antv/f2/lib/interaction";
 export default {
   name: "mytreasure",
   components: {
@@ -44,25 +50,26 @@ export default {
   },
   data() {
     return {
+      bottom: 0,
       info: {}
     };
   },
   created() {
+    if (window.navigator.userAgent.match(/APICloud/i)) {
+      this.bottom = api.safeArea.bottom;
+    }
     this.$SERVER.fundcustomize().then(res => {
       this.info = res.data;
     });
     this.getJingzhi();
   },
   methods: {
-    onChange(picker, value, index) {
-      console.log(`当前值：${value}, 当前索引：${index}`);
-    },
     getJingzhi() {
       this.$SERVER
         .stock_jingzhi_list({
           page: 1,
           pagesize: 30,
-          fund_code: '999999'
+          fund_code: "999999"
         })
         .then(res => {
           this.list = res.data;
@@ -81,20 +88,33 @@ export default {
           tickCount: 3,
           range: [0, 1]
         },
-        jjjz: {
-          tickCount: 10
+        networth: {
+          // tickCount: 10
+          alias: "收益率"
         }
       });
-      chart.legend(false); // 不使用默认图例
 
+      chart.tooltip({
+        custom: true,
+        showXTip: true,
+        showYTip: true,
+        snap: true,
+        crosshairsType: "xy",
+        crosshairsStyle: {
+          lineDash: [2]
+        },
+        onShow(ev) {
+          var items = ev.items;
+          items[0].name = null;
+          items[0].value = items[0].value + "%";
+        }
+      });
       // Step 3：创建图形语法，绘制柱状图，由 genre 和 sold 两个属性决定图形位置，genre 映射至 x 轴，sold 映射至 y 轴
       chart
         .line()
         .position("fbrq*networth")
-        .shape("smooth")
-        .color("l(0) 0:#F2C587 0.5:#ED7973 1:#8659AF");
-      chart.interaction("pan");
-      chart.interaction("pinch");
+        // .shape("smooth")
+        .color("#5196ff");
 
       chart.axis("networth", {
         label: (text, index, total) => {
@@ -190,6 +210,23 @@ export default {
     width: 100%;
     height: 320px;
     background: #fff;
+  }
+}
+.bottom-btn {
+  display: flex;
+  .btn {
+    flex-grow: 1;
+    line-height: 50px;
+    background: #fff;
+    text-align: center;
+    &.sell {
+      width: 40%;
+    }
+    &.buy {
+      background: rgba(255, 89, 65, 1);
+      color: #fff;
+      width: 60%;
+    }
   }
 }
 </style>
