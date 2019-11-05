@@ -12,29 +12,42 @@
         </div>
       </div>-->
       <div class="mainnav">
-      <van-grid  clickable :border="false">
-        <van-grid-item v-for="(item, index) in homeNav" :key="index" :to="item.path" class="menu">
-          <span slot="text">{{item.title}}</span>
-          <template slot="icon">
-            <svg-icon :icon-class="item.icon" class="homeNav"></svg-icon>
-          </template>
-        </van-grid-item>
-      </van-grid>
+        <van-grid clickable :border="false">
+          <van-grid-item v-for="(item, index) in homeNav" :key="index" :to="item.path" class="menu">
+            <span slot="text">{{item.title}}</span>
+            <template slot="icon">
+              <svg-icon :icon-class="item.icon" class="homeNav"></svg-icon>
+            </template>
+          </van-grid-item>
+        </van-grid>
       </div>
-      <div class="recommended">
-        <div class="recommendedLeft">
-          <div class="recommendedLeftT">{{buy_frist.phone}} 申购{{buy_frist.fund_name}} {{buy_frist.liquidation_amount}}元</div>
-          <div class="recommendedLeftB">
-              {{buy_frist.fund_name}}：净值
-              <span>{{buy_frist.netvalue}}</span>
+
+      <van-swipe :autoplay="3000" :show-indicators="false">
+        <van-swipe-item v-for="(item,i) in buy_frist" :key="i" >
+          <div class="recommended">
+            <div class="recommendedLeft">
+              <div
+                class="recommendedLeftT"
+              >{{item.phone}} 申购{{buy_frist.item}} {{item.liquidation_amount}}元</div>
+              <div class="recommendedLeftB">
+                {{item.fund_name}}：净值
+                <span>{{item.netvalue}}</span>
+              </div>
+              <div class="recommendedLeftB">
+                年收益
+                <span>{{item.year_incratio}}</span>
+              </div>
+              <van-button
+                round
+                type="info"
+                size="small"
+                @click="$router.push('/fundDetail/'+item.fund_code)"
+                class="btn"
+              >马上申购</van-button>
+            </div>
           </div>
-          <div class="recommendedLeftB">
-              年收益
-              <span>{{buy_frist.year_incratio}}</span>
-          </div>
-          <van-button round type="info" size="small" @click="$router.push('/fundDetail/'+buy_frist.fund_code)" class="btn">马上申购</van-button>
-        </div>
-      </div>
+        </van-swipe-item>
+      </van-swipe>
       <div class="selectProject">
         <div class="selectProjectTop">
           <div class="selectProjectTopLeft">精选产品</div>
@@ -55,7 +68,7 @@
           </div>
           <div class="selectProjectBottomRight">
             <div class="selectProjectBottomRightT van-ellipsis">{{jingxuan.fund_name}}</div>
-            <div class="selectProjectBottomRightB">控制风险 | 海外资产 | 对冲配置</div>
+            <div class="selectProjectBottomRightB">{{jingxuan.property}}</div>
           </div>
         </div>
       </div>
@@ -81,7 +94,7 @@
               </div>
               <div class="typeModelDataModelRight">
                 <div class="typeModelDataModelRightT">{{item.fund_name}}</div>
-                <div class="typeModelDataModelRightB">控制风险 | 海外资产 | 对冲配置</div>
+                <div class="typeModelDataModelRightB">{{item.property}}</div>
               </div>
             </div>
           </div>
@@ -209,7 +222,7 @@ export default {
   background: #fff;
   border-radius: 5px;
   color: rgba(51, 51, 51, 1);
-  padding:5px 10px ;
+  padding: 5px 10px;
   .homeNav {
     width: 30px;
     height: 30px;

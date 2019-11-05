@@ -149,12 +149,20 @@ class Api extends Axios {
   }
   async stock_jingzhi_k(params = {}) {
     return await this.axios("POST", "Stock/stock_jingzhi_k", params);
-  }
-  
+  }  
   async sms_check(params = {}) {
     return await this.axios("POST", "User/sms_check", params);
   }
-  
+  async recharge_add(params = {}) {
+    return await this.axios("POST", "Recharge/recharge_add", params);
+  }  
+  async price_show(params = {}) {
+    return await this.axios("POST", "Recharge/price_show", params);
+  }
+  async order_sel(params = {}) {
+    return await this.axios("POST", "Recharge/order_sel", params);
+  }
+ 
 }
 
 

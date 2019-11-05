@@ -9,7 +9,7 @@
             <span>{{account}}</span>
           </div>
           <div class="rtansactionrecordsbTBtn">
-            <div>充值</div>
+            <div @click="$router.push('/recharge')">充值</div>
             <div @click="$router.push('/topup')">提现</div>
           </div>
         </div>

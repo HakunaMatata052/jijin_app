@@ -10,7 +10,7 @@
               {{item.fund_name}}
               <span v-if="item.hot!=0">热</span>
             </div>
-            <div>控制风险 | 海外资产 | 对冲配置</div>
+            <div>{{item.property}}</div>
           </van-col>
           <van-col span="7" class="myselectionlistR">
             <div>{{item.year_incratio}}</div>

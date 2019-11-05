@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <navBar :title="data.title" stl="nobg"/>
+    <navBar :title="data.title"/>
     <div class="main">
       <div class="aboutus">{{data.content}}</div>
     </div>

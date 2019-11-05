@@ -74,6 +74,7 @@ axios.interceptors.response.use(
 
       // 错误状态处理
       if (status === 401) {
+        window.localStorage.removeItem('token')
         router.push("/login");
       } else if (status === 403) {
         router.push("/login");

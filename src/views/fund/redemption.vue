@@ -22,11 +22,12 @@
       </div>
       <van-field
         class="buyNum"
-        v-model.number="value"
+        v-model="value"
         label="填写赎回份额"
         :placeholder="`当前可赎回份额${info.volume}`"
         size="large"
         label-width="120px"
+        type="number"
         @focus="keyboardShow = true"
       >
         <span slot="button" @click="sellAll" class="sell-all">全部赎回</span>
@@ -75,6 +76,10 @@ export default {
         this.$toast.fail("不能超过当前可赎回份额");
         this.value = ""
       }
+      if(Number(value)<=0){
+        this.$toast.fail("不能超过当前可赎回份额");
+        this.value = ""
+      }
     }
   },
   created() {
@@ -118,6 +123,10 @@ export default {
           data: res.data
         }
         this.$router.push('/redemptionsuccess')
+      }).catch(err=>{
+        setTimeout(() => {
+          this.$router.go(-1)
+        }, 3000);
       })
     }
   }

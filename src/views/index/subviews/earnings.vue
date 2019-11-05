@@ -8,21 +8,21 @@
         </van-col>
       </van-row>
       <van-row type="flex" justify="center" class="total">
-          <span>总资产</span>
-          <van-icon
-            name="eye-o"
-            color="#fff"
-            v-if="$store.state.moneyShow"
-            size="23px"
-            @click="$store.state.moneyShow = !$store.state.moneyShow"
-          />
-          <van-icon
-            name="closed-eye"
-            color="#fff"
-            size="23px"
-            v-else
-            @click="$store.state.moneyShow = !$store.state.moneyShow"
-          />
+        <span>总资产</span>
+        <van-icon
+          name="eye-o"
+          color="#fff"
+          v-if="$store.state.moneyShow"
+          size="23px"
+          @click="$store.state.moneyShow = !$store.state.moneyShow"
+        />
+        <van-icon
+          name="closed-eye"
+          color="#fff"
+          size="23px"
+          v-else
+          @click="$store.state.moneyShow = !$store.state.moneyShow"
+        />
       </van-row>
       <h1 v-if="$store.state.moneyShow">{{data.zongyue}}</h1>
       <h1 v-else>******</h1>
@@ -40,8 +40,9 @@
     <van-cell class="balance" to="/touchbalance">
       <template slot="title">
         <span class="custom-title">账户余额</span>
-        <span class="custom-num">{{data.zhanghuyue}}元</span>
+        <span class="custom-num">{{data.zhanghuyue}}元+体验金：{{data.tiyanjin}}元</span>
       </template>
+      <van-icon name="question-o" slot="right-icon" style="line-height: inherit;" size="20px" @click.stop="$router.push('/aboutus/95')"  />
     </van-cell>
     <van-row type="flex">
       <van-col span="12">
@@ -92,7 +93,7 @@
       </template>
       <template>
         <van-col span="12" class="zhang">{{item.residual_quantity}}</van-col>
-        <van-col span="12" :class="item.rise == 0?'text-end die':'text-end zhang'">{{item.fee}}</van-col>
+        <van-col span="12" :class="item.fee > 0?'text-end zhang':'text-end die'">{{item.fee}}</van-col>
       </template>
     </van-cell>
   </div>
@@ -105,7 +106,7 @@ export default {
   data() {
     return {
       data: {},
-      top:0
+      top: 0
     };
   },
   created() {
@@ -113,7 +114,7 @@ export default {
       this.data = res.data;
     });
   },
-  
+
   mounted() {
     var systemType = this.$store.state.systemType;
     if (systemType == "android") {
@@ -123,7 +124,6 @@ export default {
       this.top = 30;
     }
   }
-
 };
 </script>
 

@@ -20,10 +20,11 @@
       <h3>扫码下方二维码</h3>
       <div class="qrcode">
         <img :src="info.down_url" alt />
+        <h4>邀请码：<span @click="copyFn(info.sprad)">{{info.sprad}}</span></h4>
       </div>
       <div class="btn-group">
         <div class="btn" @click="saveimg">保存二维码</div>
-        <div class="btn" @click="copyFn">复制推广链接</div>
+        <div class="btn" @click="copyFn(info.register_url)">复制推广链接</div>
       </div>
     </div>
   </div>
@@ -75,13 +76,13 @@ export default {
         );
       }
     },
-    copyFn() {
+    copyFn(val) {
       var that = this
       if (window.navigator.userAgent.match(/APICloud/i)) {
         var clipBoard = api.require("clipBoard");
         clipBoard.set(
           {
-            value: that.info.register_url
+            value: val
           },
           function(ret, err) {
             if (ret) {
@@ -91,7 +92,7 @@ export default {
           }
         );
       } else {
-        copy(that.info.register_url);
+        copy(val);
         that.$toast.success("复制成功!");
       }
     }
@@ -160,6 +161,10 @@ export default {
       width: 140px;
       height: 140px;
       border: 10px solid rgba(255, 255, 255, 0.33);
+    }
+    h4{
+      padding: 10px 0;
+      color: #fff;
     }
   }
   .btn-group {

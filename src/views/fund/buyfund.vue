@@ -20,10 +20,10 @@
           </van-col>
         </van-row>
         <div class="buyfundtwo">
-          <div class="buyfundtwoT">
+          <!-- <div class="buyfundtwoT">
             <span>待确认金额：</span>
             <span>{{info.dazhifu_money}}元</span>
-          </div>
+          </div> -->
           <van-cell is-link :to="'/dayvalue/'+$route.params.id">
             <template slot="title">
               <div>
@@ -62,9 +62,9 @@
           </van-tabs>
           <canvas id="myChart"></canvas>
         </div>
-        <div class="buyfundfour">
+        <!-- <div class="buyfundfour">
           <van-cell title="交易记录" is-link />
-        </div>
+        </div> -->
       </div>
     </div>
     <div class="bottom-btn">
@@ -125,7 +125,11 @@ export default {
       .then(res => {
         this.info = res.data;
       });
+  },
+  mounted(){  
+    setTimeout(() => {      
     this.drawLine();
+    }, 500);  
   },
   methods: {
     drawLine() {

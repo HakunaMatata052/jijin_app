@@ -132,7 +132,7 @@ export default {
         .tradepwdup_auth(this.form)
         .then(res => {
           this.loading = false;
-          this.$router.push("/transaction");
+          this.$router.push("/mine");
         })
         .catch(err => {
           this.loading = false;

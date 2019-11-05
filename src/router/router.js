@@ -497,7 +497,7 @@ const router = new Router({
         isLogin: true
       }
     },
-    
+
     //修改绑定手机
     {
       path: "/securityaccount2",
@@ -622,6 +622,19 @@ const router = new Router({
         isLogin: true
       }
     },
+    {
+      path: "/recharge",
+      name: "recharge",
+      component: () => import("@/views/mine/recharge.vue"),
+      meta: {
+        keepAlive: false,
+        isTransition: true,
+        title: "充值",
+        isMember: false,
+        isLogin: true
+      }
+    },
+
   ]
 });
 router.beforeEach((to, from, next) => {
@@ -632,7 +645,7 @@ router.beforeEach((to, from, next) => {
       }
     }
   }
-  if (to.meta.index!=undefined) {
+  if (to.meta.index != undefined) {
     $store.state.tabActiveIndex = to.meta.index
   }
   if (to.meta.isLogin) {
@@ -643,18 +656,19 @@ router.beforeEach((to, from, next) => {
         router.push('/login/' + from.name)
       }
     } else {
-      next()
+      if (to.meta.isMember) {
+        if (!$store.state.userInfo.auth) {
+          Toast.fail('请先实名认证后操作！')
+          router.push('/registration')
+        } else {
+          next()
+        }
+      } else {
+        next()
+      }
     }
   } else {
     next()
-  }
-  if (to.meta.isMember) {
-    if (!$store.state.userInfo.auth) {
-      Toast.fail('请先实名认证后操作！')
-      router.push('/registration')
-    } else {
-      next()
-    }
   }
 })
 

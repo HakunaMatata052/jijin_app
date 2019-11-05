@@ -151,12 +151,12 @@ export default {
 #register {
   width: 100%;
   height: 100%;
+    background: #fff;
   .register {
     width: 100%;
     display: flex;
     justify-content: center;
     margin-top: 30px;
-    background: #fff;
     padding: 28px 0 45px 0;
   }
   .main {
@@ -167,7 +167,6 @@ export default {
       color: #999;
       font-size: 14px;
       span {
-        text-decoration: underline;
         color: rgba(81, 150, 255, 1);
       }
     }
@@ -221,7 +220,6 @@ export default {
     margin-top: 50px;
     color: #999;
     span {
-      text-decoration: underline;
       color: rgba(81, 150, 255, 1);
     }
   }

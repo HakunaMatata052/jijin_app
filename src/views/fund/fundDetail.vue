@@ -102,7 +102,7 @@
       </div>
       <van-cell-group class="titleList">
         <van-cell title="基金档案" is-link value="查看详情" :to="`/fundArchives/${$route.params.id}`" />
-        <div class="inforn">
+        <div class="inforn" v-if="data.stcok_img_jingli.ac_img">
           <div class="infornLeft">
             <img class="headerImg" :src="data.stcok_img_jingli.ac_img" />
           </div>
@@ -113,13 +113,13 @@
             </div>
             <div class="infornRightBottom">
               <p class="infornRightBottomText1">{{data.stcok_img_jingli.rz_time}}任职</p>
-              <p class="infornRightBottomText2">{{data.stcok_img_jingli.rate}}%</p>
+              <p :class="data.stcok_img_jingli.rate>0?'infornRightBottomText2':'infornRightBottomText3'">{{data.stcok_img_jingli.rate}}%</p>
             </div>
           </div>
         </div>
       </van-cell-group>
-      <van-cell-group>
-        <van-cell title="交易须知" is-link />
+      <van-cell-group class="titleList">
+        <van-cell title="交易须知"/>
         <div class="tradingKnow">
           <div class="tradingKnowLeft">份额确认</div>
           <div class="tradingKnowRight">
@@ -215,9 +215,11 @@ export default {
         this.data.ljjz = res.data.cache.ljjz;
       });
     this.getJingzhi();
-    this.drawLine();
   },
-  mounted() {
+  mounted() {    
+    setTimeout(() => {      
+      this.drawLine();
+    }, 500);
     window.addEventListener("scroll", this.handleScroll, true);
     var systemType = this.$store.state.systemType;
     if (systemType == "android") {
@@ -526,29 +528,31 @@ export default {
       padding-right: 30px;
       .infornRightTopText1 {
         font-size: 15px;
-        font-family: PingFang-SC-Bold;
         font-weight: bold;
         color: rgba(51, 51, 51, 1);
       }
       .infornRightBottomText1 {
         font-size: 13px;
-        font-family: PingFang-SC-Medium;
         font-weight: 500;
         color: rgba(153, 153, 153, 1);
         line-height: 18px;
       }
       .infornRightTopText2 {
         font-size: 13px;
-        font-family: PingFang-SC-Medium;
         font-weight: 500;
         color: rgba(153, 153, 153, 1);
         line-height: 18px;
       }
       .infornRightBottomText2 {
         font-size: 18px;
-        font-family: PingFang-SC-Bold;
         font-weight: bold;
         color: rgba(255, 89, 65, 1);
+        line-height: 18px;
+      }      
+      .infornRightBottomText3 {
+        font-size: 18px;
+        font-weight: bold;
+        color: #4CAF50;
         line-height: 18px;
       }
     }

@@ -135,7 +135,7 @@ module.exports = {
     proxy: {
       // 配置多个代理(配置一个 proxy: "http://localhost:4000" )
       "/api": {
-        target: "http://a.com:8551/api",
+        target: "http://b.com:8551/api",
         changeOrigin: true, 
         pathRewrite: {
           "^/api": "/"
