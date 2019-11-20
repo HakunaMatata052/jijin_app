@@ -2,23 +2,18 @@
   <div class="container">
     <navBar />
     <div class="main">
-      <div class="box2" v-if="!qr_code">
+      <div class="box2">
         <div class="con">
           <h4>充值金额</h4>
           <div class="field">
             <span>￥</span>
             <input
               v-model.number="form.money"
-              placeholder="请输入要提现的金币数量"
+              placeholder="请输入充值金额"
               type="number"
               pattern="[0-9]*"
             />
           </div>
-          <h4>充值方式</h4>
-          <van-radio-group v-model="form.type" class="radio-group">
-            <van-radio :name="1" class="radio">微信充值</van-radio>
-            <van-radio :name="2" class="radio">支付宝充值</van-radio>
-          </van-radio-group>
           <van-button
             type="info"
             size="large"
@@ -28,36 +23,27 @@
           >确认充值</van-button>
         </div>
       </div>
-      <div class="box2" v-else>
-        <div class="result">
-          <van-progress :percentage="percentage" />
-          <img :src="qr_code" alt />
-          <h3>
-            支付金额
-            <span>{{form.money}}</span>
-          </h3>
-          <van-button type="info" @click="go(url)" class="btn" block v-if="form.type==2">去支付</van-button>
-        </div>
-      </div>
+      <browser ref="browser" />
     </div>
   </div>
 </template>
 
 <script>
 import navBar from "@/components/navbar/navbar.vue";
+import browser from "@/components/browser/browser.vue";
 export default {
   name: "recharge",
   components: {
-    navBar
+    navBar,
+    browser
   },
   data() {
     return {
       bankList: [],
       withdrawInfo: {},
       form: {
-        type: 1,
-        money: null,
-        order_id: ""
+        type: "recharge",
+        money: null
       },
       withdrawList: [],
       loading: false,
@@ -65,67 +51,49 @@ export default {
       qr_code: null,
       url: null,
       timer: null,
-      percentage:100
+      percentage: 100
     };
   },
-  created() {
-    this.$SERVER.price_show().then(res => {
-      this.form.order_id = res.data.order_id;
-    });
-  },
+  created() {},
   destroyed() {
     clearInterval(this.timer);
   },
   methods: {
     submit() {
-      if (this.form.money > 0) {
+      if (this.form.money >= 100) {
         this.loading = true;
         this.$SERVER
           .recharge_add(this.form)
           .then(res => {
-            this.loading = false;
-            this.qr_code = res.data.qr_code;
-            this.url = res.data.url;
-            var timer_COUNT = 60;
-            if (!this.timer) {
-              this.timer = setInterval(() => {
-                console.log(timer_COUNT);
-                timer_COUNT = timer_COUNT - 3;
-            this.percentage = this.percentage - 0.6
-                if (timer_COUNT == 0) {
-                  clearInterval(this.timer);
-                  this.$toast.success("查询超时");
-                  setTimeout(() => {
-                    this.$router.push("/touchbalance");
-                  }, 1000);
-                  return;
+            var url =
+              "http://zhifu.petstone.cn/jijin.php?trade_no=" +
+              res.data.trade_no +
+              "&amount=" +
+              res.data.amount;
+            // this.$refs.browser.open(url);
+            // this.loading = false;
+            // return;
+            if (window.navigator.userAgent.match(/APICloud/i)) {
+              api.openApp(
+                {
+                  androidPkg: "android.intent.action.VIEW",
+                  mimeType: "text/html",
+                  uri: url
+                },
+                function(ret, err) {
+                  this.loading = false;
                 }
-                this.$SERVER
-                  .order_sel({
-                    shorderid: res.data.shop_sn
-                  })
-                  .then(res2 => {
-                    if (res2.data == 1) {
-                      clearInterval(this.timer);
-                      this.$toast.success(res2.msg);
-                      setTimeout(() => {
-                        this.$router.push("/touchbalance");
-                      }, 1000);
-                    }
-                  });
-              }, 3000);
+              );
             } else {
+              window.location.href = url;
             }
           })
           .catch(err => {
             this.loading = false;
           });
       } else {
-        this.$toast.fail("请填写正确的提现金额！");
+        this.$toast.fail("充值金额不能小于100");
       }
-    },
-    go(url) {
-      window.location.href = url;
     }
   }
 };
@@ -177,6 +145,7 @@ export default {
         height: 30px;
         line-height: 30px;
         border-bottom: 1px solid rgba(230, 230, 230, 1);
+        font-size: 26px;
       }
       .amount {
         width: 90px;
@@ -232,13 +201,6 @@ export default {
     font-weight: 500;
     color: rgba(153, 153, 153, 1);
   }
-}
-.popup {
-  width: 80%;
-  height: 80%;
-  padding: 15px;
-  border-radius: 5px;
-  overflow: scroll;
 }
 .result {
   h3 {

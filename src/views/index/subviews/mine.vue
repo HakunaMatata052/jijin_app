@@ -28,6 +28,9 @@
             <svg-icon :icon-class="item.ico" class="mine-ico svgIcon" />
           </template>
         </van-cell>
+        <van-cell
+          :title="'版本'+version"
+        />
       </van-cell-group>
       <van-button type="danger" class="logout" @click="logout" :hairline="false">退出</van-button>
     </div>
@@ -48,6 +51,12 @@ export default {
     navBar
   },
   data() {
+    var version
+    if (window.navigator.userAgent.match(/APICloud/i)) {
+      version = api.appVersion
+    }else{
+      version = "0.0.0"
+    }
     return {
       top: 0,
       user_img: user_img,
@@ -99,7 +108,8 @@ export default {
         }
       ],
       isShow: false,
-      user_nickname: this.$store.state.userInfo.user_nickname
+      user_nickname: this.$store.state.userInfo.user_nickname,
+      version:version
     };
   },
   created() {

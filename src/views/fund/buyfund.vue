@@ -28,7 +28,7 @@
             <template slot="title">
               <div>
                 <span class="custom-title">持有份额：</span>
-                <span>{{info.amount}}元</span>
+                <span>{{info.amount}}</span>
               </div>
               <div class="custom-titlB">
                 <span class="custom-title">{{info.yesterday_time}}净值：</span>
@@ -71,9 +71,15 @@
       <div
         class="btn sell"
         @click="$router.push('/redemption/'+$route.params.id)"
-        v-if="info.can_shuhui"
+        v-if="info.can_shuhui && info.suo_state==1"
         :style="'height:'+ (50+bottom)+'px;'"
       >赎回</div>
+      
+      <div
+        class="btn sell"
+        v-else-if="info.suo_state == 0"
+        :style="'height:'+ (50+bottom)+'px;'"
+      >锁定期({{$METHOD.format(info.suo_time,'yy.MM.dd')}})</div>
       <div
         class="btn buy"
         @click="$router.push('/buy/'+info.fund_code)"

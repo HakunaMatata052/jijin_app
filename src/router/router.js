@@ -278,7 +278,7 @@ const router = new Router({
     },
     //交易详情
     {
-      path: "/transactionDetail/:id",
+      path: "/transactionDetail/:id/:state?",
       name: "transactionDetail",
       component: () => import("@/views/earnings/transactionDetail.vue"),
       meta: {
@@ -382,7 +382,7 @@ const router = new Router({
     },
     //购买
     {
-      path: "/buy/:id",
+      path: "/buy/:id/:type?",
       name: "buy",
       component: () => import("@/views/fund/buy.vue"),
       meta: {

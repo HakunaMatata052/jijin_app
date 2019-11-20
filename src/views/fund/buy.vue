@@ -26,7 +26,8 @@
         <van-cell clickable>
           <template slot="title">
             使用账户余额（可用余额
-            <span class="custom-t">{{info.account}}</span>+<span class="custom-t">{{info.tyj}}</span>)
+            <span class="custom-t">{{info.account}}</span>+
+            <span class="custom-t">{{info.tyj}}</span>)
           </template>
           <!-- <van-switch v-model="checked" size="24px" slot="right-icon" /> -->
         </van-cell>
@@ -59,9 +60,9 @@ export default {
     return {
       info: {
         stock: {
-          fund_name:"",
+          fund_name: "",
           fund_code: "",
-          minmoney:0,
+          minmoney: 0
         },
         feilv: "",
         account: "0"
@@ -72,6 +73,16 @@ export default {
     };
   },
   created() {
+    if (this.$route.params.type == 0) {
+      this.$dialog
+        .alert({
+          message: "此产品处于锁定期"
+        })
+        .then(() => {
+          // on close
+        });
+    }
+
     this.$SERVER
       .stockBuy({
         fund_code: this.$route.params.id
@@ -103,11 +114,11 @@ export default {
         this.$toast.fail("金额低于最低起购值！");
         return;
       }
-      if (this.money >  (this.info.account+this.info.tyj)) {
+      if (this.money > this.info.account + this.info.tyj) {
         this.$toast.fail("余额不足！");
         return;
       }
-      
+
       this.$refs.passwordBox.showFn();
     },
     ajaxBuyState(pwd) {

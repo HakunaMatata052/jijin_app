@@ -6,7 +6,7 @@ const {
   spawn
 } = require("child_process");
 
-const appname = "apiCloud"; // 项目文件名
+const appname = "widget"; // 项目文件名widget
 const appPort = 1111; // 真机同步端口,浏览器打开端口。(请与)
 const scriptActive = process.env.npm_lifecycle_event;
 
@@ -135,7 +135,7 @@ module.exports = {
     proxy: {
       // 配置多个代理(配置一个 proxy: "http://localhost:4000" )
       "/api": {
-        target: "http://b.com:8551/api",
+        target: "http://qianduoduo.petstone.cn/api",
         changeOrigin: true, 
         pathRewrite: {
           "^/api": "/"

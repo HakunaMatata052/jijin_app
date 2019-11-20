@@ -156,7 +156,7 @@
         <p class="bottomTitle">收藏</p>
       </van-goods-action-icon>
       <van-goods-action-button
-        :to="'/buy/'+$route.params.id"
+        :to="'/buy/'+$route.params.id+'/'+suo_state"
         :disabled="!data.can_buy"
         :color="data.can_buy?'rgba(255, 89, 65, 1)':'#999'"
       >
@@ -202,7 +202,8 @@ export default {
       },
       bg: "nobg",
       list: [],
-      type: 1
+      type: 1,
+      suo_state:1
     };
   },
   created() {
@@ -211,6 +212,7 @@ export default {
         fund_code: this.$route.params.id
       })
       .then(res => {
+        this.suo_state = res.data.suo_state
         this.data = res.data;
         this.data.ljjz = res.data.cache.ljjz;
       });

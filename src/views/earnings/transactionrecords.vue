@@ -13,7 +13,7 @@
           <van-sticky :container="$refs['item'+index]" :offset-top="46">
             <div class="data">{{key}}</div>
           </van-sticky>
-          <div class="rtansactionrecordsList" v-for="(item,i) in value" :key="i" @click="$router.push('/transactionDetail/'+item.order_id)">
+          <div class="rtansactionrecordsList" v-for="(item,i) in value" :key="i" @click="$router.push('/transactionDetail/'+item.id+'/'+item.state)">
             <div class="rtansactionrecordsL">
               <p>{{item.status}}</p>
             </div>

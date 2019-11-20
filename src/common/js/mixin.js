@@ -67,7 +67,7 @@ export const uuid = function (len, radix, typeid) {
  * @param {String} fmt 指定格式 yyyy-MM-dd hh:mm:ss 
  */
 export const format = function (dateTimeStamp,fmt) {
-  dateTimeStamp = new Date(Number(dateTimeStamp)) 
+  dateTimeStamp = new Date(Number(dateTimeStamp*1000)) 
   var o = {
     "M+": dateTimeStamp.getMonth() + 1, //月份 
     "d+": dateTimeStamp.getDate(), //日 
